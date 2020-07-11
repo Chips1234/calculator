@@ -210,37 +210,43 @@
                 <RowDefinition Height="1*" MaxHeight="8"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" MaxWidth="0"/>
+                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                <ColumnDefinition Width="1*" MaxWidth="16"/>
+                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+            </Grid.ColumnDefinitions>
 
             <TextBox x:Name="BaseRate"
                      x:Uid="BaseRateHeader"
                      Grid.Row="1"
-                     Width="180"
-                     Margin="0,0,196,0"/>
+                     Grid.Column="1"
+                     Width="180"/>
 
             <TextBox x:Name="InterestRate"
                      x:Uid="InterestRateHeader"
                      Grid.Row="1"
-                     Width="180"
-                     Margin="196,0,0,0"/>
+                     Grid.Column="3"
+                     Width="180"/>
 
             <TextBox x:Name="Term"
                      x:Uid="TermHeader"
                      Grid.Row="3"
-                     Width="180"
-                     Margin="0,0,196,0"/>
+                     Grid.Column="1"
+                     Width="180"/>
 
             <TextBox x:Name="Compounded"
                      x:Uid="CompoundedHeader"
                      Grid.Row="3"
-                     Width="180"
-                     Margin="196,0,0,0"/>
+                     Grid.Column="3"
+                     Width="180"/>
+
 
             <Button x:Name="CalculateInterestButton"
                     x:Uid="CalculateInterestButton"
                     Grid.Row="5"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Style="{StaticResource ButtonRevealStyle}"
+                    Grid.Column="1"
+                    Style="{StaticResource AccentButtonStyle}"
                     Click="CalculateInterestButton_Click"/>
 
             <!-- Compound Results -->
