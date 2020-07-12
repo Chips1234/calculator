@@ -4751,7 +4751,7 @@
   <data name="BillAmoutHeader.Header" xml:space="preserve">
     <value>Bill Amout ($)</value>
   </data>
-  <data name="TipsAmoutHeader.Header" xml:space="preserve">
+  <data name="TipAmoutHeader.Header" xml:space="preserve">
     <value>Tips (%)</value>
   </data>
   <data name="CompoundedHeader.Header" xml:space="preserve">
@@ -4767,5 +4767,8 @@
   </data>
   <data name="TotalInterestEarned" xml:space="preserve">
     <value>Total interest earned:</value>
+  </data>
+  <data name="Finance_TotalLabel.Text" xml:space="preserve">
+    <value>Total</value>
   </data>
 </root>

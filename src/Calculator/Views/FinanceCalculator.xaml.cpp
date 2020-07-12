@@ -111,3 +111,12 @@ void CalculatorApp::FinanceCalculator::OnCopyMenuItemClicked(Platform::Object ^ 
 
     CopyPasteManager::CopyToClipboard(result->Text);
 }
+
+void CalculatorApp::FinanceCalculator::TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+}
+
+void CalculatorApp::FinanceCalculator::FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e)
+{
+    FindName("TipCalculationGrid");
+}

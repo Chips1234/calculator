@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:CalculatorApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
              d:DesignHeight="300"
              d:DesignWidth="400"
              mc:Ignorable="d">
@@ -180,7 +181,8 @@
                   x:Uid="FinanceCalculationOption"
                   Grid.Row="1"
                   Style="{ThemeResource FinanceCalculation_ComboStyle}"
-                  SelectedIndex="0">
+                  SelectedIndex="0"
+                  SelectionChanged="FinanceCalculationOption_Changed">
             <ComboBoxItem x:Uid="Finance_CompoundOption"
                           MinWidth="276"
                           ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
@@ -206,7 +208,6 @@
                 <RowDefinition Height="Auto" MinHeight="32"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
                 <RowDefinition Height="Auto"/>
-
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" MaxWidth="0"/>
@@ -215,29 +216,31 @@
                 <ColumnDefinition Width="Auto" MaxWidth="180"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="BaseRate"
-                     x:Uid="BaseRateHeader"
-                     Grid.Row="1"
-                     Grid.Column="1"
-                     Width="180"/>
+            <muxc:NumberBox x:Name="BaseRate"
+                            x:Uid="BaseRateHeader"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Width="180"/>
 
-            <TextBox x:Name="InterestRate"
-                     x:Uid="InterestRateHeader"
-                     Grid.Row="1"
-                     Grid.Column="3"
-                     Width="180"/>
+            <muxc:NumberBox x:Name="InterestRate"
+                            x:Uid="InterestRateHeader"
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Width="180"/>
 
-            <TextBox x:Name="Term"
-                     x:Uid="TermHeader"
-                     Grid.Row="3"
-                     Grid.Column="1"
-                     Width="180"/>
+            <muxc:NumberBox x:Name="Term"
+                            x:Uid="TermHeader"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Width="180"
+                            SpinButtonPlacementMode="Compact"/>
 
-            <TextBox x:Name="Compounded"
-                     x:Uid="CompoundedHeader"
-                     Grid.Row="3"
-                     Grid.Column="3"
-                     Width="180"/>
+            <muxc:NumberBox x:Name="Compounded"
+                            x:Uid="CompoundedHeader"
+                            Grid.Row="3"
+                            Grid.Column="3"
+                            Width="180"
+                            SpinButtonPlacementMode="Compact"/>
 
 
             <Button x:Name="CalculateInterestButton"
@@ -283,6 +286,7 @@
         <Grid x:Name="TipCalculationGrid"
               Grid.Row="2"
               x:DeferLoadStrategy="Lazy"
+              Loaded="TipGrid_Loaded"
               Visibility="{Binding IsCompoundMode, Converter={StaticResource BooleanToVisibilityNegationConverter}}">
 
             <Grid.RowDefinitions>
@@ -294,7 +298,6 @@
                 <RowDefinition Height="Auto" MinHeight="32"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" MaxWidth="0"/>
@@ -303,11 +306,57 @@
                 <ColumnDefinition Width="Auto" MaxWidth="180"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="BillAmout"
-                     x:Uid="BillAmoutHeader"
-                     Grid.Row="1"
-                     Grid.Column="1"
-                     Width="180"/>
+            <muxc:NumberBox x:Name="BillAmout"
+                            x:Uid="BillAmoutHeader"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Width="180"/>
+
+            <muxc:NumberBox x:Name="TipAmout"
+                            x:Uid="TipAmoutHeader"
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Width="180"/>
+
+            <CheckBox x:Name="SplitBillCheckBox"
+                      x:Uid="SplitBillCheckBox"
+                      Grid.Row="3"
+                      Grid.Column="1"
+                      IsChecked="{Binding IsSplitBill, Mode=OneWay}"/>
+
+            <muxc:NumberBox x:Name="SplitBetween"
+                            x:Uid="SplitBetweenHeader"
+                            Grid.Row="3"
+                            Grid.Column="3"
+                            Width="180"
+                            SpinButtonPlacementMode="Compact"
+                            Visibility="{Binding IsSplitBill, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <Button x:Name="CalculateTipButton"
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Style="{ThemeResource AccentButtonStyle}"/>
+
+            <Grid x:Name="TipResultsGrid"
+                  Grid.Row="7"
+                  Grid.ColumnSpan="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" MaxHeight="0"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*" MaxHeight="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Uid="Finance_TotalLabel"
+                           Grid.Row="1"
+                           Foreground="{StaticResource SystemControlPageTextBaseHighBrush}"/>
+                <TextBlock x:Name="TipsTotalAmout"
+                           Grid.Row="2"
+                           Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock/>
+
+            </Grid>
 
         </Grid>
 
