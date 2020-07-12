@@ -206,9 +206,7 @@
                 <RowDefinition Height="Auto" MinHeight="32"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1*" MaxHeight="8"/>
-                <RowDefinition Height="Auto"/>
+
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" MaxWidth="0"/>
@@ -249,25 +247,35 @@
                     Style="{StaticResource AccentButtonStyle}"
                     Click="CalculateInterestButton_Click"/>
 
-            <!-- Compound Results -->
-            <TextBlock x:Uid="Finance_FutureValueLabel"
-                       Grid.Row="7"
-                       Margin="0,0,0,0"
-                       Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+            <Grid x:Name="CompoundResultsGrid"
+                  Grid.Row="7"
+                  Grid.ColumnSpan="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" MaxHeight="0"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*" MaxHeight="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!-- Compound Results -->
+                <TextBlock x:Uid="Finance_FutureValueLabel"
+                           Grid.Row="1"
+                           Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
 
-            <TextBlock x:Name="CompoundResults"
-                       Grid.Row="8"
-                       Style="{ThemeResource SubtitleTextBlockStyle}"
-                       FontWeight="SemiBold"
-                       AutomationProperties.LiveSetting="Polite"
-                       ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
-                       IsTextSelectionEnabled="True"/>
-            <TextBlock x:Name="CompoundSecondaryResults"
-                       Grid.Row="10"
-                       Style="{ThemeResource BaseTextBlockStyle}"
-                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"
-                       ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
-                       IsTextSelectionEnabled="True"/>
+                <TextBlock x:Name="CompoundResults"
+                           Grid.Row="2"
+                           Style="{ThemeResource SubtitleTextBlockStyle}"
+                           FontWeight="SemiBold"
+                           AutomationProperties.LiveSetting="Polite"
+                           ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
+                           IsTextSelectionEnabled="True"/>
+                <TextBlock x:Name="CompoundSecondaryResults"
+                           Grid.Row="4"
+                           Style="{ThemeResource BaseTextBlockStyle}"
+                           Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"
+                           ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
+                           IsTextSelectionEnabled="True"/>
+            </Grid>
 
         </Grid>
 
@@ -288,6 +296,18 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" MaxWidth="0"/>
+                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                <ColumnDefinition Width="1*" MaxWidth="16"/>
+                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="BillAmout"
+                     x:Uid="BillAmoutHeader"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     Width="180"/>
 
         </Grid>
 
