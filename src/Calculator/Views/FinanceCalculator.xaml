@@ -9,6 +9,7 @@
              xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
              d:DesignHeight="300"
              d:DesignWidth="400"
+             Loaded="OnLoaded"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -233,14 +234,14 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="180"
-                            SpinButtonPlacementMode="Compact"/>
+                            SpinButtonPlacementMode="Inline"/>
 
             <muxc:NumberBox x:Name="Compounded"
                             x:Uid="CompoundedHeader"
                             Grid.Row="3"
                             Grid.Column="3"
                             Width="180"
-                            SpinButtonPlacementMode="Compact"/>
+                            SpinButtonPlacementMode="Inline"/>
 
 
             <Button x:Name="CalculateInterestButton"
@@ -322,17 +323,18 @@
                       x:Uid="SplitBillCheckBox"
                       Grid.Row="3"
                       Grid.Column="1"
-                      IsChecked="{Binding IsSplitBill, Mode=OneWay}"/>
+                      IsChecked="{Binding IsSplitBill, Mode=TwoWay}"/>
 
             <muxc:NumberBox x:Name="SplitBetween"
                             x:Uid="SplitBetweenHeader"
                             Grid.Row="3"
                             Grid.Column="3"
                             Width="180"
-                            SpinButtonPlacementMode="Compact"
+                            SpinButtonPlacementMode="Inline"
                             Visibility="{Binding IsSplitBill, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <Button x:Name="CalculateTipButton"
+                    x:Uid="CalculateTipButton"
                     Grid.Row="5"
                     Grid.Column="1"
                     Style="{ThemeResource AccentButtonStyle}"/>
@@ -354,7 +356,7 @@
                 <TextBlock x:Name="TipsTotalAmout"
                            Grid.Row="2"
                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <TextBlock/>
+                <TextBlock x:Name="TipsSecodaryResults" Grid.Row="4"/>
 
             </Grid>
 

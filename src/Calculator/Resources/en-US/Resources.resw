@@ -4771,4 +4771,16 @@
   <data name="Finance_TotalLabel.Text" xml:space="preserve">
     <value>Total</value>
   </data>
+  <data name="CalculateTipButton.Content" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="CalculateTipButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Calculate tip</value>
+  </data>
+  <data name="SplitBetweenHeader.Header" xml:space="preserve">
+    <value>Split between (people)</value>
+  </data>
+  <data name="SplitBillCheckBox.Content" xml:space="preserve">
+    <value>Split bill</value>
+  </data>
 </root>

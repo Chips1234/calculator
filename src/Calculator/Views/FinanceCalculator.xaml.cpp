@@ -120,3 +120,7 @@ void CalculatorApp::FinanceCalculator::FinanceCalculationOption_Changed(Platform
 {
     FindName("TipCalculationGrid");
 }
+
+void CalculatorApp::FinanceCalculator::OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+}
