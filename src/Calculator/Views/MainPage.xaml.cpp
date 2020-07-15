@@ -389,7 +389,7 @@ void MainPage::EnsureFinanceCalculator()
     {
         m_financeCalculator = ref new FinanceCalculator();
         m_financeCalculator->Name = L"FinanceCalculator";
-        m_financeCalculator->DataContext = m_model->GraphingCalcViewModel;
+        m_financeCalculator->DataContext = m_model->FinanceCalcViewModel;
 
         GraphingCalcHolder->Child = m_financeCalculator;
     }
