@@ -4086,4 +4086,24 @@
     <value>Graafiliselt esitamise suvandid</value>
     <comment>Screen reader prompt for the graph options panel</comment>
   </data>
+  <data name="DockPanel_HistoryMemoryLists" xml:space="preserve">
+    <value>Ajaloo- ja mäluloendid</value>
+    <comment>Automation name for the group of controls for history and memory lists.</comment>
+  </data>
+  <data name="DockPanel_MemoryList" xml:space="preserve">
+    <value>Mäluloend</value>
+    <comment>Automation name for the group of controls for memory list.</comment>
+  </data>
+  <data name="Format_HistorySlotCleared" xml:space="preserve">
+    <value>Ajaloopesa %1 on tühjendatud</value>
+    <comment>{Locked='%1'} Formatting string for a Narrator announcement when the user clears a history slot. The %1 is the index of the history slot. For example, users might hear "History slot 2 cleared".</comment>
+  </data>
+  <data name="CalcAlwaysOnTop" xml:space="preserve">
+    <value>Kalkulaator kuvatakse alati kõige peal</value>
+    <comment>Announcement to indicate calculator window is always shown on top.</comment>
+  </data>
+  <data name="CalcBackToFullView" xml:space="preserve">
+    <value>Kalkulaator on taas kuvatud täielikult</value>
+    <comment>Announcement to indicate calculator window is now back to full view.</comment>
+  </data>
 </root>
