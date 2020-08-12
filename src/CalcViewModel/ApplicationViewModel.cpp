@@ -76,7 +76,7 @@ void ApplicationViewModel::Categories::set(IObservableVector<NavCategoryGroup ^>
 
 void ApplicationViewModel::Initialize(ViewMode mode)
 {
-    if (!NavCategory::IsValidViewMode(mode))
+    if (!NavCategory::IsValidViewMode(mode) || !NavCategory::IsViewModeEnabled(mode))
     {
         mode = ViewMode::Standard;
     }
