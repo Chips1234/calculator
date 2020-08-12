@@ -4783,7 +4783,7 @@
   <data name="SplitBillCheckBox.Content" xml:space="preserve">
     <value>Split bill</value>
   </data>
-</root>
+
 
   <data name="Format_HistorySlotCleared" xml:space="preserve">
     <value>History slot %1 cleared</value>
