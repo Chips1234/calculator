@@ -4730,8 +4730,8 @@
     <value>Tips Calculator</value>
     <comment>"Tips Calculator" option for combobox.</comment>
   </data>
-  <data name="BaseRateHeader.Header" xml:space="preserve">
-    <value>Base Rate ($)</value>
+  <data name="PrincipleHeader.Header" xml:space="preserve">
+    <value>Principle ($)</value>
   </data>
   <data name="CalculateInterestButton.Content" xml:space="preserve">
     <value>Calculate</value>
@@ -4740,10 +4740,10 @@
     <value>Calulate compound interest</value>
   </data>
   <data name="InterestRateHeader.Header" xml:space="preserve">
-    <value>Interest Rate (%)</value>
+    <value>Interest Rate</value>
   </data>
   <data name="TermHeader.Header" xml:space="preserve">
-    <value>Term (Years)</value>
+    <value>Term </value>
   </data>
   <data name="Finance_FutureValueLabel.Text" xml:space="preserve">
     <value>Future Value</value>
@@ -4783,8 +4783,6 @@
   <data name="SplitBillCheckBox.Content" xml:space="preserve">
     <value>Split bill</value>
   </data>
-
-
   <data name="Format_HistorySlotCleared" xml:space="preserve">
     <value>History slot %1 cleared</value>
     <comment>{Locked='%1'} Formatting string for a Narrator announcement when the user clears a history slot. The %1 is the index of the history slot. For example, users might hear "History slot 2 cleared".</comment>
@@ -4812,5 +4810,29 @@
   <data name="rotateCarryShiftButtonSelected" xml:space="preserve">
     <value>Rotate Through Carry Circular Shift selected</value>
     <comment>Label for a radio button that toggles rotate circular with carry behavior for the shift operations.</comment>
+  </data>
+  <data name="FinancialTermType.Header" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="Financial_Year.Content" xml:space="preserve">
+    <value>Year(s)</value>
+  </data>
+  <data name="Financial_Day.Content" xml:space="preserve">
+    <value>Day(s)</value>
+  </data>
+  <data name="Financial_Month.Content" xml:space="preserve">
+    <value>Month(s)</value>
+  </data>
+  <data name="Financial_Decimal.Content" xml:space="preserve">
+    <value>Decimal</value>
+  </data>
+  <data name="Financial_Percentage.Content" xml:space="preserve">
+    <value>Percent</value>
+  </data>
+  <data name="InterestType.Header" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="Finance_Years" xml:space="preserve">
+    <value>Year(s)</value>
   </data>
 </root>

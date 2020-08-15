@@ -211,49 +211,67 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" MaxWidth="0"/>
-                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                <ColumnDefinition Width="Auto" MinWidth="100"/>
+                <ColumnDefinition Width="1*" MaxWidth="5"/>
+                <ColumnDefinition Width="Auto" MinWidth="50"/>
                 <ColumnDefinition Width="1*" MaxWidth="16"/>
-                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                <ColumnDefinition Width="Auto" MinWidth="90"/>
+                <ColumnDefinition Width="1*" MaxWidth="5"/>
+                <ColumnDefinition Width="Auto" MinWidth="50"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <muxc:NumberBox x:Name="BaseRate"
-                            x:Uid="BaseRateHeader"
+            <muxc:NumberBox x:Name="Principle"
+                            x:Uid="PrincipleHeader"
                             Grid.Row="1"
-                            Grid.Column="1"
-                            Width="180"/>
+                            Grid.ColumnSpan="3"/>
 
             <muxc:NumberBox x:Name="InterestRate"
                             x:Uid="InterestRateHeader"
                             Grid.Row="1"
-                            Grid.Column="3"
-                            Width="180"/>
+                            Grid.Column="4"/>
+
+            <ComboBox x:Name="InterestType"
+                      x:Uid="InterestType"
+                      Grid.Row="1"
+                      Grid.Column="6"
+                      SelectedIndex="0">
+                <ComboBoxItem x:Uid="Financial_Percentage" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+                <ComboBoxItem x:Uid="Financial_Decimal" Content="{StaticResource ComboBoxItemContentTemplate}"/>
+            </ComboBox>
 
             <muxc:NumberBox x:Name="Term"
                             x:Uid="TermHeader"
                             Grid.Row="3"
-                            Grid.Column="1"
-                            Width="180"
                             SpinButtonPlacementMode="Inline"/>
+
+            <ComboBox x:Name="FinancialTermType"
+                      x:Uid="FinancialTermType"
+                      Grid.Row="3"
+                      Grid.Column="2"
+                      SelectedIndex="0">
+                <ComboBoxItem x:Uid="Financial_Year" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+                <ComboBoxItem x:Uid="Financial_Month" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+                <ComboBoxItem x:Uid="Financial_Day" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+            </ComboBox>
 
             <muxc:NumberBox x:Name="Compounded"
                             x:Uid="CompoundedHeader"
                             Grid.Row="3"
-                            Grid.Column="3"
-                            Width="180"
+                            Grid.Column="4"
+                            Grid.ColumnSpan="3"
                             SpinButtonPlacementMode="Inline"/>
 
 
             <Button x:Name="CalculateInterestButton"
                     x:Uid="CalculateInterestButton"
                     Grid.Row="5"
-                    Grid.Column="1"
                     Style="{StaticResource AccentButtonStyle}"
                     Click="CalculateInterestButton_Click"/>
 
             <Grid x:Name="CompoundResultsGrid"
                   Grid.Row="7"
-                  Grid.ColumnSpan="4">
+                  Grid.ColumnSpan="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" MaxHeight="0"/>
                     <RowDefinition Height="Auto"/>
@@ -301,34 +319,29 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" MaxWidth="0"/>
-                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                <ColumnDefinition Width="Auto" MinWidth="180"/>
                 <ColumnDefinition Width="1*" MaxWidth="16"/>
-                <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                <ColumnDefinition Width="Auto" MinWidth="180"/>
             </Grid.ColumnDefinitions>
 
             <muxc:NumberBox x:Name="BillAmout"
                             x:Uid="BillAmoutHeader"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Width="180"/>
+                            Grid.Row="1"/>
 
             <muxc:NumberBox x:Name="TipAmout"
                             x:Uid="TipAmoutHeader"
                             Grid.Row="1"
-                            Grid.Column="3"
-                            Width="180"/>
+                            Grid.Column="2"/>
 
             <CheckBox x:Name="SplitBillCheckBox"
                       x:Uid="SplitBillCheckBox"
                       Grid.Row="3"
-                      Grid.Column="1"
                       IsChecked="{Binding IsSplitBill, Mode=TwoWay}"/>
 
             <muxc:NumberBox x:Name="SplitBetween"
                             x:Uid="SplitBetweenHeader"
                             Grid.Row="3"
-                            Grid.Column="3"
+                            Grid.Column="2"
                             Width="180"
                             SpinButtonPlacementMode="Inline"
                             Visibility="{Binding IsSplitBill, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -336,7 +349,6 @@
             <Button x:Name="CalculateTipButton"
                     x:Uid="CalculateTipButton"
                     Grid.Row="5"
-                    Grid.Column="1"
                     Style="{ThemeResource AccentButtonStyle}"/>
 
             <Grid x:Name="TipResultsGrid"
