@@ -3,13 +3,24 @@
 
 #include "pch.h"
 #include "CalcViewModel/Common/CopyPasteManager.h"
+#include "CalcViewModel/Common/TraceLogger.h"
 #include "FinanceCalculator.xaml.h"
 
 using namespace CalculatorApp;
+using namespace CalculatorApp::Common;
+
 using namespace Platform;
+using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
+using namespace Windows::Globalization;
+using namespace Windows::Globalization::DateTimeFormatting;
+using namespace Windows::System::UserProfile;
+using namespace Windows::UI::Core;
+using namespace Windows::UI::ViewManagement;
 using namespace Windows::UI::Xaml;
+using namespace Windows::UI::Xaml::Automation;
+using namespace Windows::UI::Xaml::Automation::Peers;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Controls::Primitives;
 using namespace Windows::UI::Xaml::Data;
@@ -22,6 +33,9 @@ FinanceCalculator::FinanceCalculator()
 	InitializeComponent();
 
     CopyMenuItem->Text = AppResourceProvider::GetInstance()->GetResourceString(L"copyMenuItem");
+
+    m_financeCalcOptionChangedEventToken = FinanceCalculationOption->SelectionChanged +=
+        ref new SelectionChangedEventHandler(this, &FinanceCalculator::FinanceCalculationOption_Changed);
 }
 
 void FinanceCalculator::SetDefaultFocus()
@@ -147,8 +161,14 @@ void CalculatorApp::FinanceCalculator::TipGrid_Loaded(Platform::Object ^ sender,
 void CalculatorApp::FinanceCalculator::FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e)
 {
     FindName("TipCalculationGrid");
+    FinanceCalculationOption->SelectionChanged -= m_financeCalcOptionChangedEventToken;
 }
 
 void CalculatorApp::FinanceCalculator::OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
+}
+
+void FinanceCalculator::OnVisualStateChanged(Platform::Object ^ sender, Windows::UI::Xaml::VisualStateChangedEventArgs ^ e)
+{
+    TraceLogger::GetInstance()->LogVisualStateChanged(ViewMode::Date, e->NewState->Name, false);
 }

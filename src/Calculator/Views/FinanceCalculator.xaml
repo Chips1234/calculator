@@ -177,13 +177,35 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
 
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup CurrentStateChanged="OnVisualStateChanged">
+                <VisualState x:Name="LeftAlignedLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="480"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="C0.Width" Value="456"/>
+                        <Setter Target="C1.Width" Value="*"/>
+                        <Setter Target="CompoundResults.FontSize" Value="24"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="DefaultLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="CompoundResults.FontSize" Value="20"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <!-- ComboBox for Financial Calculation options -->
         <ComboBox x:Name="FinanceCalculationOption"
                   x:Uid="FinanceCalculationOption"
                   Grid.Row="1"
                   Style="{ThemeResource FinanceCalculation_ComboStyle}"
-                  SelectedIndex="0"
-                  SelectionChanged="FinanceCalculationOption_Changed">
+                  SelectedIndex="0">
             <ComboBoxItem x:Uid="Finance_CompoundOption"
                           MinWidth="276"
                           ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
@@ -291,6 +313,7 @@
                            AutomationProperties.LiveSetting="Polite"
                            ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
                            IsTextSelectionEnabled="True"/>
+                
                 <TextBlock x:Name="CompoundSecondaryResults"
                            Grid.Row="4"
                            Style="{ThemeResource BaseTextBlockStyle}"
