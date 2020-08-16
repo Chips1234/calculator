@@ -4835,4 +4835,7 @@
   <data name="Finance_Years" xml:space="preserve">
     <value>Year(s)</value>
   </data>
+  <data name="FinancialError" xml:space="preserve">
+    <value>Make sure that all fields are filled in and try again.</value>
+  </data>
 </root>

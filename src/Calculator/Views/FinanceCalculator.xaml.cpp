@@ -43,128 +43,157 @@ void FinanceCalculator::SetDefaultFocus()
     FinanceCalculationOption->Focus(::FocusState::Programmatic);
 }
 
-double FinanceCalculator::FutureValue()
+double FinanceCalculator::FutureValue(double CompoundedValue)
 {
-    // Convert Baserate textbox to double
-    String ^ PrincipleTextbox = Principle->Text;
-    std::wstring PrincipleString(PrincipleTextbox->Data());
-    double Base = std::stod(PrincipleString);
-
-    // Convert Interest textbox to double
-    double InterestDecimal = 0;
-    if (InterestType->SelectedIndex == 0)
+    if (Principle->Text != "" && InterestRate->Text != "" && Term->Text != "")
     {
-        String ^ InterestTextBox = InterestRate->Text;
-        std::wstring InterestString(InterestTextBox->Data());
-        double Interest = std::stod(InterestString);
-        InterestDecimal = (Interest / 100);
-    }
-    else if (InterestType->SelectedIndex == 1)
-    {
-        String ^ InterestTextBox = InterestRate->Text;
-        std::wstring InterestString(InterestTextBox->Data());
-        InterestDecimal = std::stod(InterestString);
-    }
+        // Convert Baserate textbox to double
+        String ^ PrincipleTextbox = Principle->Text;
+        std::wstring PrincipleString(PrincipleTextbox->Data());
+        double Base = std::stod(PrincipleString);
 
-    // Convert Term textbox to double. If it is a day, devide the value by 365. If it is a month, 12.
-    double Years = 0;
-    if (FinancialTermType->SelectedIndex == 0)
-    {
-        String ^ TermTextbox = Term->Text;
-        std::wstring TermString(TermTextbox->Data());
-        Years = std::stod(TermString);
-    }
-    else if (FinancialTermType->SelectedIndex == 1)
-    {
-        String ^ TermTextbox = Term->Text;
-        std::wstring TermString(TermTextbox->Data());
-        double month = std::stod(TermString);
-        Years = (month / 12);
-    }
-    else if (FinancialTermType->SelectedIndex == 2)
-    {
-        String ^ TermTextbox = Term->Text;
-        std::wstring TermString(TermTextbox->Data());
-        double day = std::stod(TermString);
-        Years = (day / 365);
-    }
+        // Convert Interest textbox to double
+        double InterestDecimal = 0;
+        if (InterestType->SelectedIndex == 0)
+        {
+            String ^ InterestTextBox = InterestRate->Text;
+            std::wstring InterestString(InterestTextBox->Data());
+            double Interest = std::stod(InterestString);
+            InterestDecimal = (Interest / 100);
+        }
+        else if (InterestType->SelectedIndex == 1)
+        {
+            String ^ InterestTextBox = InterestRate->Text;
+            std::wstring InterestString(InterestTextBox->Data());
+            InterestDecimal = std::stod(InterestString);
+        }
 
-    // Convert how many times it is compounded field to double
-    String ^ CompoundedTextBox = Compounded->Text;
-    std::wstring CompoundedString(CompoundedTextBox->Data());
-    double Frequency = std::stod(CompoundedString);
+        // Convert Term textbox to double. If it is a day, devide the value by 365. If it is a month, 12.
+        double Years = 0;
+        if (FinancialTermType->SelectedIndex == 0)
+        {
+            String ^ TermTextbox = Term->Text;
+            std::wstring TermString(TermTextbox->Data());
+            Years = std::stod(TermString);
+        }
+        else if (FinancialTermType->SelectedIndex == 1)
+        {
+            String ^ TermTextbox = Term->Text;
+            std::wstring TermString(TermTextbox->Data());
+            double month = std::stod(TermString);
+            Years = (month / 12);
+        }
+        else if (FinancialTermType->SelectedIndex == 2)
+        {
+            String ^ TermTextbox = Term->Text;
+            std::wstring TermString(TermTextbox->Data());
+            double day = std::stod(TermString);
+            Years = (day / 365);
+        }
 
-    // Equation for calculating the future value (Formula: BaseRate *(1 + (Interest[decimal] / Frequency))^(Years * Frequency))
-    double CompoundedValue = Base * (pow(1 + (InterestDecimal / Frequency), Years * Frequency));
+        // Convert how many times it is compounded field to double
+        String ^ CompoundedTextBox = Compounded->Text;
+        std::wstring CompoundedString(CompoundedTextBox->Data());
+        double Frequency = std::stod(CompoundedString);
 
+        // Equation for calculating the future value (Formula: BaseRate *(1 + (Interest[decimal] / Frequency))^(Years * Frequency))
+        CompoundedValue = Base * (pow(1 + (InterestDecimal / Frequency), Years * Frequency));
+    }
+    else if (Principle->Text == "" || InterestRate->Text == "" || Term->Text == "")
+    {
+        CompoundedValue = -1;
+    }
     return CompoundedValue;
 }
 
-double FinanceCalculator::InterestEarned()
+double FinanceCalculator::InterestEarned(double CompoundedValue)
 {
-    double CompoundedValue = FutureValue();
+    double CompoundValue = FutureValue(CompoundedValue);
+    double Earnings = 0;
+    if (Principle->Text != "" && FutureValue(CompoundedValue) != -1)
+    {
+        String ^ PrincipleTextbox = Principle->Text;
+        std::wstring PrincipleString(PrincipleTextbox->Data());
+        double Base = std::stod(PrincipleString);
 
-    String ^ PrincipleTextbox = Principle->Text;
-    std::wstring PrincipleString(PrincipleTextbox->Data());
-    double Base = std::stod(PrincipleString);
-
-    double Earnings = CompoundedValue - Base;
+        Earnings = CompoundValue - Base;
+    }
+    else if (Principle->Text == "" && FutureValue(CompoundedValue) == -1)
+    {
+        Earnings = -1;
+    }
 
     return Earnings;
 }
 
-void FinanceCalculator::CalculateInterestButton_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+void FinanceCalculator::CalculateInterestButton_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e, double CompoundedValue)
 {
-    // Convert Term textbox to double
     double Years = 0;
-    if (FinancialTermType->SelectedIndex == 0)
+    if (Term->Text != "")
     {
-        String ^ TermTextbox = Term->Text;
-        std::wstring TermString(TermTextbox->Data());
-        Years = std::stod(TermString);
+        // Convert Term textbox to double
+        if (FinancialTermType->SelectedIndex == 0)
+        {
+            String ^ TermTextbox = Term->Text;
+            std::wstring TermString(TermTextbox->Data());
+            Years = std::stod(TermString);
+        }
+        else if (FinancialTermType->SelectedIndex == 1)
+        {
+            String ^ TermTextbox = Term->Text;
+            std::wstring TermString(TermTextbox->Data());
+            double month = std::stod(TermString);
+            Years = (month / 12);
+        }
+        else if (FinancialTermType->SelectedIndex == 2)
+        {
+            String ^ TermTextbox = Term->Text;
+            std::wstring TermString(TermTextbox->Data());
+            double day = std::stod(TermString);
+            Years = (day / 365);
+        }
     }
-    else if (FinancialTermType->SelectedIndex == 1)
+    else if (Term->Text == "")
     {
-        String ^ TermTextbox = Term->Text;
-        std::wstring TermString(TermTextbox->Data());
-        double month = std::stod(TermString);
-        Years = (month / 12);
-    }
-    else if (FinancialTermType->SelectedIndex == 2)
-    {
-        String ^ TermTextbox = Term->Text;
-        std::wstring TermString(TermTextbox->Data());
-        double day = std::stod(TermString);
-        Years = (day / 365);
+        Years = -1;
     }
 
-    double CompoundedValue = FutureValue();
-    double Earnings = InterestEarned();
+    double Earnings = InterestEarned(CompoundedValue);
+    double CompoundValue = FutureValue(CompoundedValue);
 
-        CompoundResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CurrencySymbol") + CompoundedValue.ToString();
+    if (CompoundValue != -1 && Years != -1 && Earnings != -1)
+    {
+        CompoundResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CurrencySymbol") + CompoundValue.ToString();
         CompoundSecondaryResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"Over") + " " + Years.ToString() + " "
                                          + AppResourceProvider::GetInstance()->GetResourceString(L"Finance_Years") + ". "
-                                         + AppResourceProvider::GetInstance()->GetResourceString(L"TotalInterestEarned")+" "+Earnings.ToString();
+                                         + AppResourceProvider::GetInstance()->GetResourceString(L"TotalInterestEarned") + " " + Earnings.ToString();
+    }
+    else if (CompoundValue == -1 || Years == -1 || Earnings == -1)
+    {
+        CompoundResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CalculationFailed");
+        CompoundSecondaryResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"FinancialError");
+    }
+
 }
 
-void CalculatorApp::FinanceCalculator::OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+void FinanceCalculator::OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     auto result = safe_cast<TextBlock ^>(Finance_ResultsContextMenu->Target);
 
     CopyPasteManager::CopyToClipboard(result->Text);
 }
 
-void CalculatorApp::FinanceCalculator::TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+void FinanceCalculator::TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
 }
 
-void CalculatorApp::FinanceCalculator::FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e)
+void FinanceCalculator::FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e)
 {
     FindName("TipCalculationGrid");
     FinanceCalculationOption->SelectionChanged -= m_financeCalcOptionChangedEventToken;
 }
 
-void CalculatorApp::FinanceCalculator::OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+void FinanceCalculator::OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
 }
 

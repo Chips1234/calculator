@@ -20,13 +20,13 @@ namespace CalculatorApp
 	{
 	public:
 		FinanceCalculator();
-        void SetDefaultFocus();
+        void SetDefaultFocus();   
 
     private:
-        void CalculateInterestButton_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void CalculateInterestButton_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e, double CompoundedValue);
         void OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
-        double FutureValue();
-        double InterestEarned();
+        double FutureValue(double CompoundedValue);
+        double InterestEarned(double CompoundedValue);
         void TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
         void FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e);
         void OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);

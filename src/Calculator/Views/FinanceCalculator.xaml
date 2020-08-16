@@ -13,153 +13,175 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <converters:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="FinanceErrorBackgroundBrush" Color="#33EB5757"/>
+                    <SolidColorBrush x:Key="FinanceErrorBorderBrush" Color="#FFEB5757"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="FinanceErrorBackgroundBrush" Color="#33EB5757"/>
+                    <SolidColorBrush x:Key="FinanceErrorBorderBrush" Color="#FFEB5757"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrast">
+                    <SolidColorBrush x:Key="FinanceErrorBackgroundBrush" Color="{ThemeResource SystemColorButtonFaceColor}"/>
+                    <SolidColorBrush x:Key="FinanceErrorBorderBrush" Color="Red"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
 
-        <DataTemplate x:Key="ComboBoxItemContentTemplate">
-            <TextBlock Text="{Binding}" TextWrapping="WrapWholeWords"/>
-        </DataTemplate>
+            <converters:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
 
-        <Style x:Key="FinanceCalculation_ComboStyle" TargetType="ComboBox">
-            <Setter Property="Padding" Value="0,0,0,0"/>
-            <Setter Property="MinHeight" Value="20"/>
-            <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
-            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundTransparentBrush}"/>
-            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="TabNavigation" Value="Once"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
-            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
-            <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="True"/>
-            <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
-            <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="UseSystemFocusVisuals" Value="True"/>
-            <Setter Property="FocusVisualMargin" Value="-5,0,0,0"/>
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <CarouselPanel/>
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"/>
-                                    <VisualState x:Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Target="BackgroundElement.Background" Value="{ThemeResource SystemControlHighlightTransparentBrush}"/>
-                                            <Setter Target="SelectedContentPresenter.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumHighBrush}"/>
-                                            <Setter Target="DropDownGlyph.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumHighBrush}"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                    <VisualState x:Name="Pressed">
-                                        <VisualState.Setters>
-                                            <Setter Target="BackgroundElement.Background" Value="{ThemeResource SystemControlHighlightTransparentBrush}"/>
-                                            <Setter Target="SelectedContentPresenter.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumBrush}"/>
-                                            <Setter Target="DropDownGlyph.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumBrush}"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                    <VisualState x:Name="Disabled"/>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="DropDownStates">
-                                    <VisualState x:Name="Opened">
-                                        <Storyboard>
-                                            <SplitOpenThemeAnimation ClosedTargetName="SelectedContentPresenter"
-                                                                     OffsetFromCenter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOffset}"
-                                                                     OpenedLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOpenedHeight}"
-                                                                     OpenedTargetName="PopupBorder"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Closed">
-                                        <Storyboard>
-                                            <SplitCloseThemeAnimation ClosedTargetName="SelectedContentPresenter"
-                                                                      OffsetFromCenter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOffset}"
-                                                                      OpenedLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOpenedHeight}"
-                                                                      OpenedTargetName="PopupBorder"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <ContentPresenter x:Name="ContentPresenter" Opacity="0"/>
-                            <Popup x:Name="Popup">
-                                <Border x:Name="PopupBorder"
-                                        Margin="0,-1,0,-1"
-                                        HorizontalAlignment="Stretch"
-                                        Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                                        BorderBrush="{ThemeResource SystemControlForegroundChromeHighBrush}"
-                                        BorderThickness="{ThemeResource ComboBoxDropdownBorderThickness}">
-                                    <ScrollViewer x:Name="ScrollViewer"
-                                                  MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownContentMinWidth}"
-                                                  Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                                  AutomationProperties.AccessibilityView="Raw"
-                                                  BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}"
-                                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                                  HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
-                                                  IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
-                                                  IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
-                                                  IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
-                                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
-                                                  VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
-                                                  VerticalSnapPointsAlignment="Near"
-                                                  VerticalSnapPointsType="OptionalSingle"
-                                                  ZoomMode="Disabled">
-                                        <ItemsPresenter/>
-                                    </ScrollViewer>
-                                </Border>
-                            </Popup>
-                            <Border x:Name="BackgroundElement"
-                                    Grid.ColumnSpan="2"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"/>
-                            <TextBlock x:Name="SelectedContentPresenter"
-                                       Margin="{TemplateBinding Padding}"
-                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                       Style="{ThemeResource BodyTextBlockStyle}"
-                                       FontWeight="SemiBold"
-                                       AutomationProperties.AccessibilityView="Raw"
-                                       FlowDirection="{TemplateBinding FlowDirection}"
-                                       Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedValue.Content}"
-                                       TextWrapping="WrapWholeWords"/>
-                            <TextBlock x:Name="DropDownGlyph"
-                                       Grid.Column="1"
-                                       Margin="8,3,12,0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                       FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                       FontSize="12"
-                                       AutomationProperties.AccessibilityView="Raw"
-                                       IsHitTestVisible="False"
-                                       Text="&#xE0E5;"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <DataTemplate x:Key="ComboBoxItemContentTemplate">
+                <TextBlock Text="{Binding}" TextWrapping="WrapWholeWords"/>
+            </DataTemplate>
 
-        <MenuFlyout x:Key="Finance_ResultsContextMenu" x:Name="Finance_ResultsContextMenu">
-            <MenuFlyoutItem x:Name="CopyMenuItem"
-                            x:Uid="CopyMenuItem"
-                            Click="OnCopyMenuItemClicked"
-                            Icon="Copy"/>
-        </MenuFlyout>
+            <Style x:Key="FinanceCalculation_ComboStyle" TargetType="ComboBox">
+                <Setter Property="Padding" Value="0,0,0,0"/>
+                <Setter Property="MinHeight" Value="20"/>
+                <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+                <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundTransparentBrush}"/>
+                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="TabNavigation" Value="Once"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
+                <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="True"/>
+                <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
+                <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                <Setter Property="FocusVisualMargin" Value="-5,0,0,0"/>
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <CarouselPanel/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Target="BackgroundElement.Background" Value="{ThemeResource SystemControlHighlightTransparentBrush}"/>
+                                                <Setter Target="SelectedContentPresenter.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumHighBrush}"/>
+                                                <Setter Target="DropDownGlyph.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumHighBrush}"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <VisualState.Setters>
+                                                <Setter Target="BackgroundElement.Background" Value="{ThemeResource SystemControlHighlightTransparentBrush}"/>
+                                                <Setter Target="SelectedContentPresenter.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumBrush}"/>
+                                                <Setter Target="DropDownGlyph.Foreground" Value="{ThemeResource SystemControlHighlightAltBaseMediumBrush}"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled"/>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="DropDownStates">
+                                        <VisualState x:Name="Opened">
+                                            <Storyboard>
+                                                <SplitOpenThemeAnimation ClosedTargetName="SelectedContentPresenter"
+                                                                         OffsetFromCenter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOffset}"
+                                                                         OpenedLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOpenedHeight}"
+                                                                         OpenedTargetName="PopupBorder"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Closed">
+                                            <Storyboard>
+                                                <SplitCloseThemeAnimation ClosedTargetName="SelectedContentPresenter"
+                                                                          OffsetFromCenter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOffset}"
+                                                                          OpenedLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownOpenedHeight}"
+                                                                          OpenedTargetName="PopupBorder"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <ContentPresenter x:Name="ContentPresenter" Opacity="0"/>
+                                <Popup x:Name="Popup">
+                                    <Border x:Name="PopupBorder"
+                                            Margin="0,-1,0,-1"
+                                            HorizontalAlignment="Stretch"
+                                            Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                                            BorderBrush="{ThemeResource SystemControlForegroundChromeHighBrush}"
+                                            BorderThickness="{ThemeResource ComboBoxDropdownBorderThickness}">
+                                        <ScrollViewer x:Name="ScrollViewer"
+                                                      MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownContentMinWidth}"
+                                                      Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                                      AutomationProperties.AccessibilityView="Raw"
+                                                      BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}"
+                                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                                      HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                                                      IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                                      IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                                                      IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                                      VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                                                      VerticalSnapPointsAlignment="Near"
+                                                      VerticalSnapPointsType="OptionalSingle"
+                                                      ZoomMode="Disabled">
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                                <Border x:Name="BackgroundElement"
+                                        Grid.ColumnSpan="2"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"/>
+                                <TextBlock x:Name="SelectedContentPresenter"
+                                           Margin="{TemplateBinding Padding}"
+                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                           Style="{ThemeResource BodyTextBlockStyle}"
+                                           FontWeight="SemiBold"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           FlowDirection="{TemplateBinding FlowDirection}"
+                                           Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedValue.Content}"
+                                           TextWrapping="WrapWholeWords"/>
+                                <TextBlock x:Name="DropDownGlyph"
+                                           Grid.Column="1"
+                                           Margin="8,3,12,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                           FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                           FontSize="12"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           IsHitTestVisible="False"
+                                           Text="&#xE0E5;"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ErrorTextboxStyle" TargetType="muxc:NumberBox">
+                <Setter Property="BorderBrush" Value="{ThemeResource FinanceErrorBorderBrush}"/>
+                <Setter Property="Background" Value="{ThemeResource FinanceErrorBackgroundBrush}"/>
+            </Style>
+
+            <MenuFlyout x:Key="Finance_ResultsContextMenu" x:Name="Finance_ResultsContextMenu">
+                <MenuFlyoutItem x:Name="CopyMenuItem"
+                                x:Uid="CopyMenuItem"
+                                Click="OnCopyMenuItemClicked"
+                                Icon="Copy"/>
+            </MenuFlyout>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid x:Name="FinanceCalculatorGrid"
@@ -313,7 +335,7 @@
                            AutomationProperties.LiveSetting="Polite"
                            ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
                            IsTextSelectionEnabled="True"/>
-                
+
                 <TextBlock x:Name="CompoundSecondaryResults"
                            Grid.Row="4"
                            Style="{ThemeResource BaseTextBlockStyle}"
