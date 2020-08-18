@@ -372,7 +372,8 @@ bool NavCategory::IsViewModeEnabled(ViewMode mode)
 bool NavCategory::IsCalculatorViewMode(ViewMode mode)
 {
     // Historically, Calculator modes are Standard, Scientific, and Programmer.
-    return !IsDateCalculatorViewMode(mode) && !IsGraphingCalculatorViewMode(mode) && IsModeInCategoryGroup(mode, CategoryGroupType::Calculator);
+    return !IsDateCalculatorViewMode(mode) && !IsGraphingCalculatorViewMode(mode) && !IsFinanceCalculatorViewMode(mode)
+           && IsModeInCategoryGroup(mode, CategoryGroupType::Calculator);
 }
 
 bool NavCategory::IsGraphingCalculatorViewMode(ViewMode mode)

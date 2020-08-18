@@ -8,27 +8,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
              d:DesignHeight="300"
-             d:DesignWidth="400"
+             d:DesignWidth="480"
              Loaded="OnLoaded"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Default">
-                    <SolidColorBrush x:Key="FinanceErrorBackgroundBrush" Color="#33EB5757"/>
-                    <SolidColorBrush x:Key="FinanceErrorBorderBrush" Color="#FFEB5757"/>
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="FinanceErrorBackgroundBrush" Color="#33EB5757"/>
-                    <SolidColorBrush x:Key="FinanceErrorBorderBrush" Color="#FFEB5757"/>
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="HighContrast">
-                    <SolidColorBrush x:Key="FinanceErrorBackgroundBrush" Color="{ThemeResource SystemColorButtonFaceColor}"/>
-                    <SolidColorBrush x:Key="FinanceErrorBorderBrush" Color="Red"/>
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-
             <converters:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
@@ -170,11 +155,6 @@
                 </Setter>
             </Style>
 
-            <Style x:Key="ErrorTextboxStyle" TargetType="muxc:NumberBox">
-                <Setter Property="BorderBrush" Value="{ThemeResource FinanceErrorBorderBrush}"/>
-                <Setter Property="Background" Value="{ThemeResource FinanceErrorBackgroundBrush}"/>
-            </Style>
-
             <MenuFlyout x:Key="Finance_ResultsContextMenu" x:Name="Finance_ResultsContextMenu">
                 <MenuFlyoutItem x:Name="CopyMenuItem"
                                 x:Uid="CopyMenuItem"
@@ -209,6 +189,12 @@
                         <Setter Target="C0.Width" Value="456"/>
                         <Setter Target="C1.Width" Value="*"/>
                         <Setter Target="CompoundResults.FontSize" Value="24"/>
+                        <Setter Target="Principle.Width" Value="215"/>
+                        <Setter Target="InterestRate.Width" Value="120"/>
+                        <Setter Target="InterestType.Width" Value="90"/>
+                        <Setter Target="Term.Width" Value="120"/>
+                        <Setter Target="FinancialTermType.Width" Value="90"/>
+                        <Setter Target="Compounded.Width" Value="215"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="DefaultLayout">
@@ -217,6 +203,16 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="CompoundResults.FontSize" Value="20"/>
+                        <Setter Target="Principle.Width" Value="120"/>
+                        <Setter Target="InterestRate.Width" Value="60"/>
+                        <Setter Target="InterestType.Width" Value="40"/>
+                        <Setter Target="InterestType.FontSize" Value="10"/>
+                        <Setter Target="Term.Width" Value="40"/>
+                        <Setter Target="Term.SpinButtonPlacementMode" Value="Hidden"/>
+                        <Setter Target="FinancialTermType.Width" Value="50"/>
+                        <Setter Target="FinancialTermType.FontSize" Value="10"/>
+                        <Setter Target="Compounded.Width" Value="120"/>
+                        <Setter Target="Compounded.SpinButtonPlacementMode" Value="Hidden"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -255,13 +251,13 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="100"/>
-                <ColumnDefinition Width="1*" MaxWidth="5"/>
-                <ColumnDefinition Width="Auto" MinWidth="50"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MaxWidth="5"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*" MaxWidth="16"/>
-                <ColumnDefinition Width="Auto" MinWidth="90"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*" MaxWidth="5"/>
-                <ColumnDefinition Width="Auto" MinWidth="50"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
@@ -380,16 +376,14 @@
 
             <CheckBox x:Name="SplitBillCheckBox"
                       x:Uid="SplitBillCheckBox"
-                      Grid.Row="3"
-                      IsChecked="{Binding IsSplitBill, Mode=TwoWay}"/>
+                      Grid.Row="3"/>
 
             <muxc:NumberBox x:Name="SplitBetween"
                             x:Uid="SplitBetweenHeader"
                             Grid.Row="3"
                             Grid.Column="2"
                             Width="180"
-                            SpinButtonPlacementMode="Inline"
-                            Visibility="{Binding IsSplitBill, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            SpinButtonPlacementMode="Inline"/>
 
             <Button x:Name="CalculateTipButton"
                     x:Uid="CalculateTipButton"

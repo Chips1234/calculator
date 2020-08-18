@@ -4740,7 +4740,7 @@
     <value>Calulate compound interest</value>
   </data>
   <data name="InterestRateHeader.Header" xml:space="preserve">
-    <value>Interest Rate</value>
+    <value>Interest</value>
   </data>
   <data name="TermHeader.Header" xml:space="preserve">
     <value>Term </value>
