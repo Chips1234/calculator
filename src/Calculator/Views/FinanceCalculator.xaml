@@ -165,7 +165,7 @@
     </UserControl.Resources>
 
     <Grid x:Name="FinanceCalculatorGrid"
-          Margin="12,0,12,0"
+          Margin="12,0,0,0"
           AutomationProperties.LandmarkType="Main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="C0" Width="*"/>
@@ -203,16 +203,15 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="CompoundResults.FontSize" Value="20"/>
-                        <Setter Target="Principle.Width" Value="120"/>
-                        <Setter Target="InterestRate.Width" Value="60"/>
-                        <Setter Target="InterestType.Width" Value="40"/>
-                        <Setter Target="InterestType.FontSize" Value="10"/>
-                        <Setter Target="Term.Width" Value="40"/>
+                        <Setter Target="Principle.Width" Value="100"/>
+                        <Setter Target="Grid2.Width" Value="10"/>
+                        <Setter Target="InterestRate.Width" Value="50"/>
+                        <Setter Target="InterestType.Width" Value="70"/>
+                        <Setter Target="InterestType.FontSize" Value="13"/>
+                        <Setter Target="Term.Width" Value="50"/>
                         <Setter Target="Term.SpinButtonPlacementMode" Value="Hidden"/>
-                        <Setter Target="FinancialTermType.Width" Value="50"/>
-                        <Setter Target="FinancialTermType.FontSize" Value="10"/>
-                        <Setter Target="Compounded.Width" Value="120"/>
-                        <Setter Target="Compounded.SpinButtonPlacementMode" Value="Hidden"/>
+                        <Setter Target="FinancialTermType.Width" Value="70"/>
+                        <Setter Target="Compounded.Width" Value="110"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -253,13 +252,17 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto" MaxWidth="5"/>
+                <ColumnDefinition x:Name="Grid1"
+                                  Width="Auto"
+                                  MaxWidth="5"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="1*" MaxWidth="16"/>
+                <ColumnDefinition x:Name="Grid2"
+                                  Width="1*"
+                                  MaxWidth="16"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*" MaxWidth="5"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition x:Name="Grid3" Width="1*"/>
             </Grid.ColumnDefinitions>
 
             <muxc:NumberBox x:Name="Principle"
@@ -324,7 +327,6 @@
                 <TextBlock x:Uid="Finance_FutureValueLabel"
                            Grid.Row="1"
                            Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-
                 <TextBlock x:Name="CompoundResults"
                            Grid.Row="2"
                            Style="{ThemeResource SubtitleTextBlockStyle}"
@@ -332,7 +334,6 @@
                            AutomationProperties.LiveSetting="Polite"
                            ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
                            IsTextSelectionEnabled="True"/>
-
                 <TextBlock x:Name="CompoundSecondaryResults"
                            Grid.Row="4"
                            Style="{ThemeResource BaseTextBlockStyle}"
@@ -346,6 +347,7 @@
         <!-- Grid to calculate tips -->
         <Grid x:Name="TipCalculationGrid"
               Grid.Row="2"
+              Grid.ColumnSpan="3"
               x:DeferLoadStrategy="Lazy"
               Loaded="TipGrid_Loaded"
               Visibility="{Binding isCompoundMode, Converter={StaticResource BooleanToVisibilityNegationConverter}}">
@@ -364,37 +366,51 @@
                 <ColumnDefinition Width="Auto" MinWidth="180"/>
                 <ColumnDefinition Width="1*" MaxWidth="16"/>
                 <ColumnDefinition Width="Auto" MinWidth="180"/>
+                <ColumnDefinition Width="1*" MaxWidth="5"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <muxc:NumberBox x:Name="BillAmout"
-                            x:Uid="BillAmoutHeader"
+            <muxc:NumberBox x:Name="BillAmount"
+                            x:Uid="BillAmountHeader"
                             Grid.Row="1"/>
 
-            <muxc:NumberBox x:Name="TipAmout"
-                            x:Uid="TipAmoutHeader"
+            <muxc:NumberBox x:Name="TipAmount"
+                            x:Uid="TipAmountHeader"
                             Grid.Row="1"
                             Grid.Column="2"/>
 
+            <ComboBox x:Name="TipType"
+                      x:Uid="TipType"
+                      Grid.Row="1"
+                      Grid.Column="4"
+                      SelectedIndex="0">
+                <ComboBoxItem x:Uid="Financial_Percentage" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+                <ComboBoxItem x:Uid="Financial_Decimal" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+            </ComboBox>
+
             <CheckBox x:Name="SplitBillCheckBox"
                       x:Uid="SplitBillCheckBox"
-                      Grid.Row="3"/>
+                      Grid.Row="3"
+                      Checked="SplitBillCheckBox_Checked"
+                      Unchecked="SplitBillCheckBox_Unchecked"/>
 
             <muxc:NumberBox x:Name="SplitBetween"
                             x:Uid="SplitBetweenHeader"
                             Grid.Row="3"
                             Grid.Column="2"
-                            Width="180"
+                            Grid.ColumnSpan="3"
                             SpinButtonPlacementMode="Inline"/>
 
             <Button x:Name="CalculateTipButton"
                     x:Uid="CalculateTipButton"
                     Grid.Row="5"
-                    Style="{ThemeResource AccentButtonStyle}"/>
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Click="CalculateTipButton_Click"/>
 
             <Grid x:Name="TipResultsGrid"
                   Grid.Row="7"
-                  Grid.ColumnSpan="4">
+                  Grid.ColumnSpan="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" MaxHeight="0"/>
                     <RowDefinition Height="Auto"/>
@@ -408,8 +424,17 @@
                            Foreground="{StaticResource SystemControlPageTextBaseHighBrush}"/>
                 <TextBlock x:Name="TipsTotalAmout"
                            Grid.Row="2"
-                           Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <TextBlock x:Name="TipsSecodaryResults" Grid.Row="4"/>
+                           Style="{ThemeResource SubtitleTextBlockStyle}"
+                           FontWeight="SemiBold"
+                           AutomationProperties.LiveSetting="Polite"
+                           ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
+                           IsTextSelectionEnabled="True"/>
+                <TextBlock x:Name="TipsSecodaryResults"
+                           Grid.Row="4"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           Foreground="{StaticResource SystemControlPageTextBaseMediumBrush}"
+                           ContextFlyout="{StaticResource Finance_ResultsContextMenu}"
+                           IsTextSelectionEnabled="True"/>
 
             </Grid>
 

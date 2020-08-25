@@ -23,14 +23,21 @@ namespace CalculatorApp
         void SetDefaultFocus();   
 
     private:
-        void CalculateInterestButton_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e, double CompoundedValue);
-        void OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
-        double FutureValue(double CompoundedValue);
-        double InterestEarned(double CompoundedValue);
-        void TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
-        void FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e);
         void OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e);
+        void OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        double FutureValue();
+        double InterestEarned();
+        void CalculateInterestButton_Click(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e);
         void OnVisualStateChanged(Platform::Object ^ sender, Windows::UI::Xaml::VisualStateChangedEventArgs ^ e);
+        void TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        double TotalNoSplit();
+        double CalculatedTipsNoSplit();
+        double TotalSplit();
+        double CalculatedTipsSplit();
+        void SplitBillCheckBox_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void SplitBillCheckBox_Unchecked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void CalculateTipButton_Click(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e);
 
         Windows::Foundation::EventRegistrationToken m_financeCalcOptionChangedEventToken;
     };

@@ -4748,10 +4748,10 @@
   <data name="Finance_FutureValueLabel.Text" xml:space="preserve">
     <value>Future Value</value>
   </data>
-  <data name="BillAmoutHeader.Header" xml:space="preserve">
-    <value>Bill Amout ($)</value>
+  <data name="BillAmountHeader.Header" xml:space="preserve">
+    <value>Bill Amount ($)</value>
   </data>
-  <data name="TipAmoutHeader.Header" xml:space="preserve">
+  <data name="TipAmountHeader.Header" xml:space="preserve">
     <value>Tips (%)</value>
   </data>
   <data name="CompoundedHeader.Header" xml:space="preserve">
@@ -4761,12 +4761,13 @@
     <value>$</value>
     <comment>Currency symbol</comment>
   </data>
-  <data name="Over" xml:space="preserve">
-    <value>Over</value>
-    <comment>Over. Context used: in financial calculator, "Over {years}"</comment>
+  <data name="OverYears" xml:space="preserve">
+    <value>Over %1 year(s)</value>
+    <comment>{Locked="%1} </comment>
   </data>
   <data name="TotalInterestEarned" xml:space="preserve">
-    <value>Total interest earned:</value>
+    <value>Total interest earned: %1</value>
+    <comment>{Locked="%1"}</comment>
   </data>
   <data name="Finance_TotalLabel.Text" xml:space="preserve">
     <value>Total</value>
@@ -4837,5 +4838,22 @@
   </data>
   <data name="FinancialError" xml:space="preserve">
     <value>Make sure that all fields are filled in and try again.</value>
+  </data>
+  <data name="TipType.Header" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="PerPerson" xml:space="preserve">
+    <value>per person</value>
+  </data>
+  <data name="Tips" xml:space="preserve">
+    <value>Tips: %1</value>
+    <comment>{Locked="%1}
+</comment>
+  </data>
+  <data name="TipsPerPerson" xml:space="preserve">
+    <value>Tips: %1 per person ($%2 total tips)</value>
+  </data>
+  <data name="TotalNoSplit" xml:space="preserve">
+    <value>Total: %1</value>
   </data>
 </root>
