@@ -365,28 +365,52 @@ void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ Rout
     String ^ TotalSplitString = TotalSplit().ToString();
     String ^ TipsSplitString = CalculatedTipsSplit().ToString();
 
-    // Convert SplitBetween to double
-    String ^ SplitBetweenTextbox = SplitBetween->Text;
-    std::wstring SplitBetweenString(SplitBetweenTextbox->Data());
-    double People = std::stod(SplitBetweenString);
+    double People = 0;
+    if (SplitBetween->Text != "")
+    {
+        // Convert SplitBetween to double
+        String ^ SplitBetweenTextbox = SplitBetween->Text;
+        std::wstring SplitBetweenString(SplitBetweenTextbox->Data());
+        People = std::stod(SplitBetweenString);
+    }
+    else if (SplitBetween->Text == "")
+    {
+        People = -1;
+    }
 
 
     if (::SplitBill == false)
     {
-        TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
-        TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, TipsNoSplitString);
+        if (TotalNoSplit() != -1 && CalculatedTipsNoSplit() != -1)
+        {
+            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
+            TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, TipsNoSplitString);
+        }
+        else if (TotalNoSplit() == -1 || CalculatedTipsNoSplit() == -1)
+        {
+            TipsTotalAmout->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CalculationFailed");
+            TipsSecodaryResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"FinancialError");
+        }
     }
     else if (::SplitBill == true && People >= 2)
     {
-        TipsTotalAmout->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CurrencySymbol") + TotalSplit().ToString() + " "
-                               + resourceLoader->GetResourceString(L"PerPerson");
-        TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(TipsPerPerson, TipsSplitString, TipsNoSplitString) + " "
-                                    + LocalizationStringUtil::GetLocalizedString(TotalNoSplitResource, TotalNoSplitString);
-    }
-    // If the number of people is 1, then don't split the bill
-    else if (::SplitBill == true && People == 1)
-    {
-        TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
-        TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, TipsNoSplitString);
+        if (People >= 2 && TotalSplit() != -1 && CalculatedTipsSplit() != -1 && People != -1)
+        {
+            TipsTotalAmout->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CurrencySymbol") + TotalSplit().ToString() + " "
+                                       + resourceLoader->GetResourceString(L"PerPerson");
+            TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(TipsPerPerson, TipsSplitString, TipsNoSplitString) + " "
+                                            + LocalizationStringUtil::GetLocalizedString(TotalNoSplitResource, TotalNoSplitString);
+        }
+        // If the number of people is 1, then don't split the bill
+        else if (People == 1 && TotalSplit() != -1 && CalculatedTipsSplit() != -1 && People != -1)
+        {
+            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
+            TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, TipsNoSplitString);
+        }
+        else if (TotalSplit() == -1 || CalculatedTipsSplit() == -1 || People == -1)
+        {
+            TipsTotalAmout->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CalculationFailed");
+            TipsSecodaryResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"FinancialError");
+        }
     }
 }
