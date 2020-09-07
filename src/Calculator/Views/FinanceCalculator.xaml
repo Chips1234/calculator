@@ -189,12 +189,15 @@
                         <Setter Target="C0.Width" Value="456"/>
                         <Setter Target="C1.Width" Value="*"/>
                         <Setter Target="CompoundResults.FontSize" Value="24"/>
-                        <Setter Target="Principle.Width" Value="215"/>
+                        <Setter Target="PrincipleAndFutureValue.Width" Value="215"/>
+                        <Setter Target="Grid2.Width" Value="100"/>
                         <Setter Target="InterestRate.Width" Value="120"/>
                         <Setter Target="InterestType.Width" Value="90"/>
                         <Setter Target="Term.Width" Value="120"/>
+                        <Setter Target="Term.SpinButtonPlacementMode" Value="Inline"/>
                         <Setter Target="FinancialTermType.Width" Value="90"/>
                         <Setter Target="Compounded.Width" Value="215"/>
+                        <Setter Target="Compounded.SpinButtonPlacementMode" Value="Inline"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="DefaultLayout">
@@ -203,15 +206,16 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="CompoundResults.FontSize" Value="20"/>
-                        <Setter Target="Principle.Width" Value="100"/>
-                        <Setter Target="Grid2.Width" Value="10"/>
-                        <Setter Target="InterestRate.Width" Value="50"/>
+                        <Setter Target="PrincipleAndFutureValue.Width" Value="140"/>
+                        <Setter Target="Grid2.Width" Value="5"/>
+                        <Setter Target="InterestRate.Width" Value="70"/>
+                        <Setter Target="Grid1.Width" Value="0*"/>
                         <Setter Target="InterestType.Width" Value="70"/>
-                        <Setter Target="InterestType.FontSize" Value="13"/>
-                        <Setter Target="Term.Width" Value="50"/>
+                        <Setter Target="Term.Width" Value="70"/>
                         <Setter Target="Term.SpinButtonPlacementMode" Value="Hidden"/>
                         <Setter Target="FinancialTermType.Width" Value="70"/>
                         <Setter Target="Compounded.Width" Value="110"/>
+                        <Setter Target="Compounded.SpinButtonPlacementMode" Value="Hidden"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -242,6 +246,8 @@
               Visibility="{Binding isCompoundMode, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" MaxHeight="17"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*" MaxHeight="17"/>
                 <RowDefinition Height="Auto" MinHeight="32"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
                 <RowDefinition Height="Auto" MinHeight="32"/>
@@ -253,11 +259,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition x:Name="Grid1"
-                                  Width="Auto"
+                                  Width="1*"
                                   MaxWidth="5"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition x:Name="Grid2"
-                                  Width="1*"
+                                  Width="Auto"
                                   MaxWidth="16"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*" MaxWidth="5"/>
@@ -265,19 +271,35 @@
                 <ColumnDefinition x:Name="Grid3" Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <muxc:NumberBox x:Name="Principle"
-                            x:Uid="PrincipleHeader"
-                            Grid.Row="1"
-                            Grid.ColumnSpan="3"/>
+            <!-- Some numberbox's headers are set in the C++ file, since they need to be set dynamically -->
+
+            <RadioButton x:Name="FindFutureValue"
+                         x:Uid="FindFutureValue"
+                         Grid.Row="1"
+                         Grid.ColumnSpan="3"
+                         Checked="FindPrinciple_Checked"/>
+
+            <RadioButton x:Name="FindPrinciple"
+                         x:Uid="FindPrinciple"
+                         Grid.Row="1"
+                         Grid.Column="4"
+                         Grid.ColumnSpan="3"
+                         Checked="FindFutureValue_Checked"/>
+
+            <muxc:NumberBox x:Name="PrincipleAndFutureValue"
+                            Grid.Row="3"
+                            Grid.ColumnSpan="3"
+                            Minimum="0"/>
 
             <muxc:NumberBox x:Name="InterestRate"
                             x:Uid="InterestRateHeader"
-                            Grid.Row="1"
-                            Grid.Column="4"/>
+                            Grid.Row="3"
+                            Grid.Column="4"
+                            Minimum="0"/>
 
             <ComboBox x:Name="InterestType"
                       x:Uid="InterestType"
-                      Grid.Row="1"
+                      Grid.Row="3"
                       Grid.Column="6"
                       SelectedIndex="0">
                 <ComboBoxItem x:Uid="Financial_Percentage" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
@@ -286,12 +308,12 @@
 
             <muxc:NumberBox x:Name="Term"
                             x:Uid="TermHeader"
-                            Grid.Row="3"
-                            SpinButtonPlacementMode="Inline"/>
+                            Grid.Row="5"
+                            Minimum="0"/>
 
             <ComboBox x:Name="FinancialTermType"
                       x:Uid="FinancialTermType"
-                      Grid.Row="3"
+                      Grid.Row="5"
                       Grid.Column="2"
                       SelectedIndex="0">
                 <ComboBoxItem x:Uid="Financial_Year" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
@@ -301,20 +323,21 @@
 
             <muxc:NumberBox x:Name="Compounded"
                             x:Uid="CompoundedHeader"
-                            Grid.Row="3"
+                            Grid.Row="5"
                             Grid.Column="4"
                             Grid.ColumnSpan="3"
-                            SpinButtonPlacementMode="Inline"/>
+                            SpinButtonPlacementMode="Inline"
+                            Minimum="0"/>
 
 
             <Button x:Name="CalculateInterestButton"
                     x:Uid="CalculateInterestButton"
-                    Grid.Row="5"
+                    Grid.Row="7"
                     Style="{StaticResource AccentButtonStyle}"
                     Click="CalculateInterestButton_Click"/>
 
             <Grid x:Name="CompoundResultsGrid"
-                  Grid.Row="7"
+                  Grid.Row="9"
                   Grid.ColumnSpan="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" MaxHeight="0"/>
@@ -324,7 +347,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <!-- Compound Results -->
-                <TextBlock x:Uid="Finance_FutureValueLabel"
+                <TextBlock x:Name="ResultLabel"
                            Grid.Row="1"
                            Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
                 <TextBlock x:Name="CompoundResults"
@@ -437,8 +460,6 @@
                            IsTextSelectionEnabled="True"/>
 
             </Grid>
-
         </Grid>
-
     </Grid>
 </UserControl>

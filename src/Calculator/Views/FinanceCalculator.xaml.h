@@ -38,6 +38,8 @@ namespace CalculatorApp
         void SplitBillCheckBox_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
         void SplitBillCheckBox_Unchecked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
         void CalculateTipButton_Click(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void FindPrinciple_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void FindFutureValue_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
 
         Windows::Foundation::EventRegistrationToken m_financeCalcOptionChangedEventToken;
     };

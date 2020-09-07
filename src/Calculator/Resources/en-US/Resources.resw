@@ -4715,7 +4715,7 @@
     <comment>Automation name for the group of controls for memory list.</comment>
   </data>
   <data name="FinanceCalculationModeText" xml:space="preserve">
-    <value>Financial</value>
+    <value>Financial Worksheets</value>
     <comment>Name of the Financial Calculator mode. Displayed in the navigation menu.</comment>
   </data>
   <data name="FinanceCalculationOption.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
@@ -4730,7 +4730,7 @@
     <value>Tips Calculator</value>
     <comment>"Tips Calculator" option for combobox.</comment>
   </data>
-  <data name="PrincipleHeader.Header" xml:space="preserve">
+  <data name="PrincipleHeader" xml:space="preserve">
     <value>Principle ($)</value>
   </data>
   <data name="CalculateInterestButton.Content" xml:space="preserve">
@@ -4745,7 +4745,7 @@
   <data name="TermHeader.Header" xml:space="preserve">
     <value>Term </value>
   </data>
-  <data name="Finance_FutureValueLabel.Text" xml:space="preserve">
+  <data name="FutureValueLabel" xml:space="preserve">
     <value>Future Value</value>
   </data>
   <data name="BillAmountHeader.Header" xml:space="preserve">
@@ -4855,5 +4855,17 @@
   </data>
   <data name="TotalNoSplit" xml:space="preserve">
     <value>Total: %1</value>
+  </data>
+  <data name="FutureValueHeader" xml:space="preserve">
+    <value>Future Value ($)</value>
+  </data>
+  <data name="FindFutureValue.Content" xml:space="preserve">
+    <value>Calculate future value</value>
+  </data>
+  <data name="FindPrinciple.Content" xml:space="preserve">
+    <value>Calculate principle</value>
+  </data>
+  <data name="PrincipleLabel" xml:space="preserve">
+    <value>Principle</value>
   </data>
 </root>

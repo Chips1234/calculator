@@ -31,7 +31,8 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-bool SplitBill(false);
+bool IsFindPrinciple(false);
+bool IsSplitBill(false);
 auto resourceLoader = AppResourceProvider::GetInstance();
 
 FinanceCalculator::FinanceCalculator()
@@ -42,6 +43,8 @@ FinanceCalculator::FinanceCalculator()
 
     m_financeCalcOptionChangedEventToken = FinanceCalculationOption->SelectionChanged +=
         ref new SelectionChangedEventHandler(this, &FinanceCalculator::FinanceCalculationOption_Changed);
+
+    FindFutureValue->IsChecked = true;
 }
 
 void FinanceCalculator::OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
@@ -54,13 +57,51 @@ void FinanceCalculator::SetDefaultFocus()
     FinanceCalculationOption->Focus(::FocusState::Programmatic);
 }
 
+void FinanceCalculator::FindPrinciple_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+    PrincipleAndFutureValue->Header = resourceLoader->GetResourceString(L"PrincipleHeader");
+    ResultLabel->Text = resourceLoader->GetResourceString(L"FutureValueLabel");
+    if (CompoundResults->Text != "" && PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "" && Compounded->Text != "")
+    {
+        PrincipleAndFutureValue->Text = FutureValue().ToString();
+        CompoundResults->Text = "";
+        CompoundSecondaryResults->Text = "";
+    }
+    else
+    {
+        PrincipleAndFutureValue->Text = "";
+        CompoundResults->Text = "";
+        CompoundSecondaryResults->Text = "";
+    }
+    ::IsFindPrinciple = true;
+}
+
+void FinanceCalculator::FindFutureValue_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+    PrincipleAndFutureValue->Header = resourceLoader->GetResourceString(L"FutureValueHeader");
+    ResultLabel->Text = resourceLoader->GetResourceString(L"PrincipleLabel");
+    if (CompoundResults->Text != "" && PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "" && Compounded->Text != "")
+    {
+        PrincipleAndFutureValue->Text = FutureValue().ToString();
+        CompoundResults->Text = "";
+        CompoundSecondaryResults->Text = "";
+    }
+    else
+    {
+        PrincipleAndFutureValue->Text = "";
+        CompoundResults->Text = "";
+        CompoundSecondaryResults->Text = "";
+    }
+    ::IsFindPrinciple = false;
+}
+
 double FinanceCalculator::FutureValue()
 {
     double CompoundedValue = 0;
-    if (Principle->Text != "" && InterestRate->Text != "" && Term->Text != "")
+    if (PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "")
     {
         // Convert Baserate textbox to double
-        String ^ PrincipleTextbox = Principle->Text;
+        String ^ PrincipleTextbox = PrincipleAndFutureValue->Text;
         std::wstring PrincipleString(PrincipleTextbox->Data());
         double Base = std::stod(PrincipleString);
 
@@ -108,10 +149,17 @@ double FinanceCalculator::FutureValue()
         std::wstring CompoundedString(CompoundedTextBox->Data());
         double Frequency = std::stod(CompoundedString);
 
-        // Equation for calculating the future value (Formula: BaseRate *(1 + (Interest[decimal] / Frequency))^(Years * Frequency))
-        CompoundedValue = (Base * (pow(1 + (InterestDecimal / Frequency), Years * Frequency)));
+        if (::IsFindPrinciple == true)
+        {
+            // Equation for calculating the future value (Formula: BaseRate *(1 + (Interest[decimal] / Frequency))^(Years * Frequency))
+            CompoundedValue = (Base * (pow(1 + (InterestDecimal / Frequency), Years * Frequency)));
+        }
+        else if (::IsFindPrinciple == false)
+        {
+            CompoundedValue = (Base / (pow(1 + (InterestDecimal / Frequency), Years * Frequency)));
+        }
     }
-    else if (Principle->Text == "" || InterestRate->Text == "" || Term->Text == "")
+    else if (PrincipleAndFutureValue->Text == "" || InterestRate->Text == "" || Term->Text == "")
     {
         CompoundedValue = -1;
     }
@@ -124,15 +172,22 @@ double FinanceCalculator::InterestEarned()
     double CompoundValue = std::stod(FutureValueString);
     double Earnings = 0;
 
-    if (Principle->Text != "" && FutureValue() != -1)
+    if (PrincipleAndFutureValue->Text != "" && FutureValue() != -1)
     {
-        String ^ PrincipleTextbox = Principle->Text;
+        String ^ PrincipleTextbox = PrincipleAndFutureValue->Text;
         std::wstring PrincipleString(PrincipleTextbox->Data());
         double Base = std::stod(PrincipleString);
 
-        Earnings = (CompoundValue - Base);
+        if (::IsFindPrinciple == false)
+        {
+            Earnings = (Base - CompoundValue);
+        }
+        else if (::IsFindPrinciple == true)
+        {
+            Earnings = (CompoundValue - Base);
+        }
     }
-    else if (Principle->Text == "" && FutureValue() == -1)
+    else if (PrincipleAndFutureValue->Text == "" && FutureValue() == -1)
     {
         Earnings = -1;
     }
@@ -184,9 +239,18 @@ void FinanceCalculator::CalculateInterestButton_Click(_In_ Object ^ sender, _In_
 
     if (CompoundedValue != -1 && Years != -1 && Earnings != -1)
     {
-        CompoundResults->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + CompoundedValue;
-        CompoundSecondaryResults->Text = LocalizationStringUtil::GetLocalizedString(OverYears, YearsString) + " "
+        if (::IsFindPrinciple == false)
+        {
+            CompoundResults->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + CompoundedValue;
+            CompoundSecondaryResults->Text = LocalizationStringUtil::GetLocalizedString(OverYears, YearsString) + " "
                                          + LocalizationStringUtil::GetLocalizedString(TotalInterestEarned, EarningsString);
+        }
+        else if (::IsFindPrinciple == true)
+        {
+            CompoundResults->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + CompoundedValue;
+            CompoundSecondaryResults->Text = LocalizationStringUtil::GetLocalizedString(OverYears, YearsString) + " "
+                                             + LocalizationStringUtil::GetLocalizedString(TotalInterestEarned, EarningsString);
+        }
     }
     else if (CompoundedValue == -1 || Years == -1 || Earnings == -1)
     {
@@ -211,7 +275,7 @@ void FinanceCalculator::FinanceCalculationOption_Changed(Platform::Object ^ send
 
 void FinanceCalculator::OnVisualStateChanged(Platform::Object ^ sender, Windows::UI::Xaml::VisualStateChangedEventArgs ^ e)
 {
-    TraceLogger::GetInstance()->LogVisualStateChanged(ViewMode::Date, e->NewState->Name, false);
+    TraceLogger::GetInstance()->LogVisualStateChanged(ViewMode::Finance, e->NewState->Name, false);
 }
 
 // Code for tip calculation
@@ -343,13 +407,13 @@ double FinanceCalculator::CalculatedTipsSplit()
 
 void FinanceCalculator::SplitBillCheckBox_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
-    ::SplitBill = true;
+    ::IsSplitBill = true;
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Visible;
 }
 
 void FinanceCalculator::SplitBillCheckBox_Unchecked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
-    ::SplitBill = false;
+    ::IsSplitBill = false;
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 }
 
@@ -379,7 +443,7 @@ void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ Rout
     }
 
 
-    if (::SplitBill == false)
+    if (::IsSplitBill == false)
     {
         if (TotalNoSplit() != -1 && CalculatedTipsNoSplit() != -1)
         {
@@ -388,15 +452,15 @@ void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ Rout
         }
         else if (TotalNoSplit() == -1 || CalculatedTipsNoSplit() == -1)
         {
-            TipsTotalAmout->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CalculationFailed");
-            TipsSecodaryResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"FinancialError");
+            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CalculationFailed");
+            TipsSecodaryResults->Text = resourceLoader->GetResourceString(L"FinancialError");
         }
     }
-    else if (::SplitBill == true && People >= 2)
+    else if (::IsSplitBill == true && People >= 2)
     {
         if (People >= 2 && TotalSplit() != -1 && CalculatedTipsSplit() != -1 && People != -1)
         {
-            TipsTotalAmout->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CurrencySymbol") + TotalSplit().ToString() + " "
+            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalSplit().ToString() + " "
                                        + resourceLoader->GetResourceString(L"PerPerson");
             TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(TipsPerPerson, TipsSplitString, TipsNoSplitString) + " "
                                             + LocalizationStringUtil::GetLocalizedString(TotalNoSplitResource, TotalNoSplitString);
@@ -409,8 +473,8 @@ void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ Rout
         }
         else if (TotalSplit() == -1 || CalculatedTipsSplit() == -1 || People == -1)
         {
-            TipsTotalAmout->Text = AppResourceProvider::GetInstance()->GetResourceString(L"CalculationFailed");
-            TipsSecodaryResults->Text = AppResourceProvider::GetInstance()->GetResourceString(L"FinancialError");
+            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CalculationFailed");
+            TipsSecodaryResults->Text = resourceLoader->GetResourceString(L"FinancialError");
         }
     }
 }
