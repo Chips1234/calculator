@@ -190,7 +190,7 @@
                         <Setter Target="C1.Width" Value="*"/>
                         <Setter Target="CompoundResults.FontSize" Value="24"/>
                         <Setter Target="PrincipleAndFutureValue.Width" Value="215"/>
-                        <Setter Target="Grid2.Width" Value="100"/>
+                        <Setter Target="Grid2.Width" Value="1*"/>
                         <Setter Target="InterestRate.Width" Value="120"/>
                         <Setter Target="InterestType.Width" Value="90"/>
                         <Setter Target="Term.Width" Value="120"/>
@@ -263,8 +263,8 @@
                                   MaxWidth="5"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition x:Name="Grid2"
-                                  Width="Auto"
-                                  MaxWidth="16"/>
+                                  Width="1*"
+                                  MaxWidth="17"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*" MaxWidth="5"/>
                 <ColumnDefinition Width="Auto"/>
@@ -377,6 +377,8 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" MaxHeight="17"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*" MaxHeight="17"/>
                 <RowDefinition Height="Auto" MinHeight="32"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
                 <RowDefinition Height="Auto" MinHeight="32"/>
@@ -394,18 +396,27 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <muxc:NumberBox x:Name="BillAmount"
-                            x:Uid="BillAmountHeader"
-                            Grid.Row="1"/>
+            <RadioButton x:Name="FindBillTotal"
+                         x:Uid="FindBillTotal"
+                         Grid.Row="1"
+                         Checked="FindBillTotal_Checked"/>
+
+            <RadioButton x:Name="FindBillAmount"
+                         x:Uid="FindBillAmount"
+                         Grid.Row="1"
+                         Grid.Column="2"
+                         Checked="FindBillAmount_Checked"/>
+
+            <muxc:NumberBox x:Name="BillAmountOrTotal" Grid.Row="3"/>
 
             <muxc:NumberBox x:Name="TipAmount"
                             x:Uid="TipAmountHeader"
-                            Grid.Row="1"
+                            Grid.Row="3"
                             Grid.Column="2"/>
 
             <ComboBox x:Name="TipType"
                       x:Uid="TipType"
-                      Grid.Row="1"
+                      Grid.Row="3"
                       Grid.Column="4"
                       SelectedIndex="0">
                 <ComboBoxItem x:Uid="Financial_Percentage" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
@@ -414,25 +425,25 @@
 
             <CheckBox x:Name="SplitBillCheckBox"
                       x:Uid="SplitBillCheckBox"
-                      Grid.Row="3"
+                      Grid.Row="5"
                       Checked="SplitBillCheckBox_Checked"
                       Unchecked="SplitBillCheckBox_Unchecked"/>
 
             <muxc:NumberBox x:Name="SplitBetween"
                             x:Uid="SplitBetweenHeader"
-                            Grid.Row="3"
+                            Grid.Row="5"
                             Grid.Column="2"
                             Grid.ColumnSpan="3"
                             SpinButtonPlacementMode="Inline"/>
 
             <Button x:Name="CalculateTipButton"
                     x:Uid="CalculateTipButton"
-                    Grid.Row="5"
+                    Grid.Row="7"
                     Style="{ThemeResource AccentButtonStyle}"
                     Click="CalculateTipButton_Click"/>
 
             <Grid x:Name="TipResultsGrid"
-                  Grid.Row="7"
+                  Grid.Row="9"
                   Grid.ColumnSpan="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" MaxHeight="0"/>
@@ -442,7 +453,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock x:Uid="Finance_TotalLabel"
+                <TextBlock x:Name="TipsResultLabel"
                            Grid.Row="1"
                            Foreground="{StaticResource SystemControlPageTextBaseHighBrush}"/>
                 <TextBlock x:Name="TipsTotalAmout"

@@ -4748,7 +4748,7 @@
   <data name="FutureValueLabel" xml:space="preserve">
     <value>Future Value</value>
   </data>
-  <data name="BillAmountHeader.Header" xml:space="preserve">
+  <data name="BillAmount" xml:space="preserve">
     <value>Bill Amount ($)</value>
   </data>
   <data name="TipAmountHeader.Header" xml:space="preserve">
@@ -4769,7 +4769,7 @@
     <value>Total interest earned: %1</value>
     <comment>{Locked="%1"}</comment>
   </data>
-  <data name="Finance_TotalLabel.Text" xml:space="preserve">
+  <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
   <data name="CalculateTipButton.Content" xml:space="preserve">
@@ -4867,5 +4867,17 @@
   </data>
   <data name="PrincipleLabel" xml:space="preserve">
     <value>Principle</value>
+  </data>
+  <data name="FindBillTotal.Content" xml:space="preserve">
+    <value>Find bill total</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Total Amount ($)</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Bill Amount (Without tips)</value>
+  </data>
+  <data name="FindBillAmount.Content" xml:space="preserve">
+    <value>Find amount, without tips</value>
   </data>
 </root>

@@ -31,7 +31,10 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+// Note that "Bill Amount" refers to the total, without tips. "Total" refers to the total, including tips 
+
 bool IsFindPrinciple(false);
+bool IsFindBillAmount(false);
 bool IsSplitBill(false);
 auto resourceLoader = AppResourceProvider::GetInstance();
 
@@ -39,7 +42,7 @@ FinanceCalculator::FinanceCalculator()
 {
 	InitializeComponent();
 
-    CopyMenuItem->Text = AppResourceProvider::GetInstance()->GetResourceString(L"copyMenuItem");
+    CopyMenuItem->Text = resourceLoader->GetResourceString(L"copyMenuItem");
 
     m_financeCalcOptionChangedEventToken = FinanceCalculationOption->SelectionChanged +=
         ref new SelectionChangedEventHandler(this, &FinanceCalculator::FinanceCalculationOption_Changed);
@@ -57,13 +60,31 @@ void FinanceCalculator::SetDefaultFocus()
     FinanceCalculationOption->Focus(::FocusState::Programmatic);
 }
 
+void FinanceCalculator::OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+    auto result = safe_cast<TextBlock ^>(Finance_ResultsContextMenu->Target);
+
+    CopyPasteManager::CopyToClipboard(result->Text);
+}
+
+void FinanceCalculator::FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e)
+{
+    FindName("TipCalculationGrid");
+    FinanceCalculationOption->SelectionChanged -= m_financeCalcOptionChangedEventToken;
+}
+
+void FinanceCalculator::OnVisualStateChanged(Platform::Object ^ sender, Windows::UI::Xaml::VisualStateChangedEventArgs ^ e)
+{
+    TraceLogger::GetInstance()->LogVisualStateChanged(ViewMode::Finance, e->NewState->Name, false);
+}
+
 void FinanceCalculator::FindPrinciple_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     PrincipleAndFutureValue->Header = resourceLoader->GetResourceString(L"PrincipleHeader");
     ResultLabel->Text = resourceLoader->GetResourceString(L"FutureValueLabel");
-    if (CompoundResults->Text != "" && PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "" && Compounded->Text != "")
+    if (PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "" && Compounded->Text != "")
     {
-        PrincipleAndFutureValue->Text = FutureValue().ToString();
+        PrincipleAndFutureValue->Text = FutureValueOrPrincipleValue().ToString();
         CompoundResults->Text = "";
         CompoundSecondaryResults->Text = "";
     }
@@ -80,9 +101,9 @@ void FinanceCalculator::FindFutureValue_Checked(Platform::Object ^ sender, Windo
 {
     PrincipleAndFutureValue->Header = resourceLoader->GetResourceString(L"FutureValueHeader");
     ResultLabel->Text = resourceLoader->GetResourceString(L"PrincipleLabel");
-    if (CompoundResults->Text != "" && PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "" && Compounded->Text != "")
+    if (PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "" && Compounded->Text != "")
     {
-        PrincipleAndFutureValue->Text = FutureValue().ToString();
+        PrincipleAndFutureValue->Text = FutureValueOrPrincipleValue().ToString();
         CompoundResults->Text = "";
         CompoundSecondaryResults->Text = "";
     }
@@ -95,7 +116,7 @@ void FinanceCalculator::FindFutureValue_Checked(Platform::Object ^ sender, Windo
     ::IsFindPrinciple = false;
 }
 
-double FinanceCalculator::FutureValue()
+double FinanceCalculator::FutureValueOrPrincipleValue()
 {
     double CompoundedValue = 0;
     if (PrincipleAndFutureValue->Text != "" && InterestRate->Text != "" && Term->Text != "")
@@ -168,11 +189,11 @@ double FinanceCalculator::FutureValue()
 
 double FinanceCalculator::InterestEarned()
 {
-    std::wstring FutureValueString(FutureValue().ToString()->Data());
+    std::wstring FutureValueString(FutureValueOrPrincipleValue().ToString()->Data());
     double CompoundValue = std::stod(FutureValueString);
     double Earnings = 0;
 
-    if (PrincipleAndFutureValue->Text != "" && FutureValue() != -1)
+    if (PrincipleAndFutureValue->Text != "" && FutureValueOrPrincipleValue() != -1)
     {
         String ^ PrincipleTextbox = PrincipleAndFutureValue->Text;
         std::wstring PrincipleString(PrincipleTextbox->Data());
@@ -187,7 +208,7 @@ double FinanceCalculator::InterestEarned()
             Earnings = (CompoundValue - Base);
         }
     }
-    else if (PrincipleAndFutureValue->Text == "" && FutureValue() == -1)
+    else if (PrincipleAndFutureValue->Text == "" && FutureValueOrPrincipleValue() == -1)
     {
         Earnings = -1;
     }
@@ -234,7 +255,7 @@ void FinanceCalculator::CalculateInterestButton_Click(_In_ Object ^ sender, _In_
     String ^ OverYears = resourceLoader->GetResourceString(L"OverYears");
     String ^ TotalInterestEarned = resourceLoader->GetResourceString(L"TotalInterestEarned");
 
-    double CompoundedValue = FutureValue();
+    double CompoundedValue = FutureValueOrPrincipleValue();
     double Earnings = InterestEarned();
 
     if (CompoundedValue != -1 && Years != -1 && Earnings != -1)
@@ -260,37 +281,34 @@ void FinanceCalculator::CalculateInterestButton_Click(_In_ Object ^ sender, _In_
 
 }
 
-void FinanceCalculator::OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-    auto result = safe_cast<TextBlock ^>(Finance_ResultsContextMenu->Target);
-
-    CopyPasteManager::CopyToClipboard(result->Text);
-}
-
-void FinanceCalculator::FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e)
-{
-    FindName("TipCalculationGrid");
-    FinanceCalculationOption->SelectionChanged -= m_financeCalcOptionChangedEventToken;
-}
-
-void FinanceCalculator::OnVisualStateChanged(Platform::Object ^ sender, Windows::UI::Xaml::VisualStateChangedEventArgs ^ e)
-{
-    TraceLogger::GetInstance()->LogVisualStateChanged(ViewMode::Finance, e->NewState->Name, false);
-}
-
 // Code for tip calculation
 void FinanceCalculator::TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+    FindBillTotal->IsChecked = true;
+}
+
+void FinanceCalculator::FindBillTotal_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+    ::IsFindBillAmount = false;
+    BillAmountOrTotal->Header = resourceLoader->GetResourceString(L"BillAmount");
+    TipsResultLabel->Text = resourceLoader->GetResourceString(L"Total");
+}
+
+void FinanceCalculator::FindBillAmount_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+    ::IsFindBillAmount = true;
+    BillAmountOrTotal->Header = resourceLoader->GetResourceString(L"TotalAmount");
+    TipsResultLabel->Text = resourceLoader->GetResourceString(L"Amount");
 }
 
 double FinanceCalculator::TotalNoSplit()
 {
-    double AmountDue = 0;
-    if (BillAmount->Text != "" && TipAmount->Text != "")
+    double AmountDueOrTotal = 0;
+    if (BillAmountOrTotal->Text != "" && TipAmount->Text != "")
     {
         // Convert BillAmount to double 
-        String ^ BillAmoutTextbox = BillAmount->Text;
+        String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
         std::wstring BillAmoutString(BillAmoutTextbox->Data());
         double Bill = std::stod(BillAmoutString);
 
@@ -308,30 +326,44 @@ double FinanceCalculator::TotalNoSplit()
             TipDecimal = (Tip + 1.00);
         }
 
-        AmountDue = Bill * TipDecimal;
+        if (::IsFindBillAmount == false)
+        {
+            AmountDueOrTotal = (Bill * TipDecimal);
+        }
+        else if (::IsFindBillAmount == true)
+        {
+            AmountDueOrTotal = (Bill / TipDecimal);
+        }
     }
-    else if (BillAmount->Text == "" || TipAmount->Text == "")
+    else if (BillAmountOrTotal->Text == "" || TipAmount->Text == "")
     {
-        AmountDue = -1;
+        AmountDueOrTotal = -1;
     }
 
-    return AmountDue;
+    return AmountDueOrTotal;
 }
 
 double FinanceCalculator::CalculatedTipsNoSplit()
 {
-    double Total = TotalNoSplit();
+    double AmountDueOrTotal = TotalNoSplit();
     double CalculatedTips = 0;
-    if (BillAmount->Text != "" && Total != -1)
+    if (BillAmountOrTotal->Text != "" && AmountDueOrTotal != -1)
     {
         // Convert BillAmount to double
-        String ^ BillAmoutTextbox = BillAmount->Text;
+        String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
         std::wstring BillAmoutString(BillAmoutTextbox->Data());
         double Bill = std::stod(BillAmoutString);
 
-        CalculatedTips = (Total - Bill);
+        if (::IsFindBillAmount == false)
+        {
+            CalculatedTips = (AmountDueOrTotal - Bill);
+        }
+        else if (::IsFindBillAmount == true)
+        {
+            CalculatedTips = (Bill - AmountDueOrTotal);
+        }
     }
-    else if (BillAmount->Text == "" || Total == -1)
+    else if (BillAmountOrTotal->Text == "" || AmountDueOrTotal == -1)
     {
         CalculatedTips = -1;
     }
@@ -342,10 +374,10 @@ double FinanceCalculator::CalculatedTipsNoSplit()
 double FinanceCalculator::TotalSplit()
 {
     double AmountDue = 0;
-    if (BillAmount->Text != "" && TipAmount->Text != "" && SplitBetween->Text != "")
+    if (BillAmountOrTotal->Text != "" && TipAmount->Text != "" && SplitBetween->Text != "")
     {
         // Convert BillAmount to double
-        String ^ BillAmoutTextbox = BillAmount->Text;
+        String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
         std::wstring BillAmoutString(BillAmoutTextbox->Data());
         double Bill = std::stod(BillAmoutString);
 
@@ -370,7 +402,7 @@ double FinanceCalculator::TotalSplit()
 
         AmountDue = (Bill * TipDecimal) / People;
     }
-    else if (BillAmount->Text == "" || TipAmount->Text == "" || SplitBetween->Text == "")
+    else if (BillAmountOrTotal->Text == "" || TipAmount->Text == "" || SplitBetween->Text == "")
     {
         AmountDue = -1;
     }
@@ -383,10 +415,10 @@ double FinanceCalculator::CalculatedTipsSplit()
     double Total = TotalSplit();
     double CalculatedTips = 0;
 
-    if (BillAmount->Text != "" && Total != -1)
+    if (BillAmountOrTotal->Text != "" && Total != -1)
     {
         // Convert BillAmount to double
-        String ^ BillAmoutTextbox = BillAmount->Text;
+        String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
         std::wstring BillAmoutString(BillAmoutTextbox->Data());
         double Bill = std::stod(BillAmoutString);
 
@@ -397,7 +429,7 @@ double FinanceCalculator::CalculatedTipsSplit()
 
         CalculatedTips = (Total - (Bill / People));
     }
-    else if (BillAmount->Text == "" && Total == -1)
+    else if (BillAmountOrTotal->Text == "" && Total == -1)
     {
         CalculatedTips = -1;
     }

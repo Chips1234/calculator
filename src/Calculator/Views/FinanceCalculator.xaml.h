@@ -26,11 +26,13 @@ namespace CalculatorApp
         void OnLoaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
         void FinanceCalculationOption_Changed(Platform::Object ^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs ^ e);
         void OnCopyMenuItemClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
-        double FutureValue();
+        double FutureValueOrPrincipleValue();
         double InterestEarned();
         void CalculateInterestButton_Click(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e);
         void OnVisualStateChanged(Platform::Object ^ sender, Windows::UI::Xaml::VisualStateChangedEventArgs ^ e);
         void TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void FindBillTotal_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void FindBillAmount_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
         double TotalNoSplit();
         double CalculatedTipsNoSplit();
         double TotalSplit();
