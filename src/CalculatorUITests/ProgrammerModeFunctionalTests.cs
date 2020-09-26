@@ -4,9 +4,7 @@
 using CalculatorUITestFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Appium.Windows;
 using System;
-using System.Collections.Generic;
 
 namespace CalculatorUITests
 {
@@ -888,6 +886,38 @@ namespace CalculatorUITests
             page.ProgrammerOperators.RoRCarryButton.Click();
             page.StandardOperators.EqualButton.Click();
             Assert.AreEqual("8 0 8", page.CalculatorResults.GetCalculatorResultText());
+        }
+        #endregion
+
+        /// <summary>
+        /// Copy and Paste the numbers into/from the calculator
+        /// </summary>
+        #region Copy-Paste operations
+        [TestMethod]
+        [Priority(1)]
+        public void Copy_And_Paste_Simple_Number()
+        {
+            page.ProgrammerOperators.BitFlip.Click();
+            page.ProgrammerOperators.Bit1.Click();
+            CalculatorApp.Window.SendKeys(Keys.Control + "c" + Keys.Control);
+            page.ProgrammerOperators.FullKeypad.Click();
+            page.StandardOperators.ClearEntryButton.Click();
+            CalculatorApp.Window.SendKeys(Keys.Control + "v" + Keys.Control);
+            Assert.AreEqual("2", page.CalculatorResults.GetCalculatorResultText());
+        }
+
+        [TestMethod]
+        [Priority(1)]
+        public void Copy_And_Paste_Invalid_Number()
+        {
+            page.ProgrammerOperators.BitFlip.Click();
+            page.ProgrammerOperators.Bit63.Click();
+            CalculatorApp.Window.SendKeys(Keys.Control + "c" + Keys.Control);
+            page.ProgrammerOperators.FullKeypad.Click();
+            page.StandardOperators.ClearEntryButton.Click();
+            page.ProgrammerOperators.QWordButton.Click();
+            CalculatorApp.Window.SendKeys(Keys.Control + "v" + Keys.Control);
+            Assert.AreEqual("Invalid input", page.CalculatorResults.GetCalculatorResultText());
         }
         #endregion
     }

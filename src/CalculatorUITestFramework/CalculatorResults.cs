@@ -3,6 +3,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Appium.Windows;
 using System;
+using OpenQA.Selenium.Interactions;
 
 namespace CalculatorUITestFramework
 {
