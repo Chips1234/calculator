@@ -259,6 +259,9 @@
     <ClInclude Include="Controls\OperatorPanelListView.h" />
     <ClInclude Include="Controls\OperatorPanelButton.h" />
     <ClInclude Include="Controls\EquationTextBox.h" />
+    <ClInclude Include="SettingsPage.xaml.h">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="Utils\DispatcherTimerDelayer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
@@ -350,6 +353,9 @@
     <Page Include="EquationStylePanelControl.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Calculator.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -421,6 +427,9 @@
     <ClCompile Include="Controls\OperatorPanelListView.cpp" />
     <ClCompile Include="Controls\OperatorPanelButton.cpp" />
     <ClCompile Include="Controls\EquationTextBox.cpp" />
+    <ClCompile Include="SettingsPage.xaml.cpp">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="Utils\DispatcherTimerDelayer.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

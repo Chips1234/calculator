@@ -523,6 +523,7 @@
     <Page Include="Views\CalculatorProgrammerDisplayPanel.xaml">
       <Filter>Views\StateTriggers</Filter>
     </Page>
+    <Page Include="SettingsPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Resources\en-US\CEngineStrings.resw">

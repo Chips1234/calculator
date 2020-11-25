@@ -9,6 +9,7 @@
 #include "Views/GraphingCalculator/GraphingCalculator.xaml.h"
 #include "Views/UnitConverter.xaml.h"
 #include "CalcViewModel/ApplicationViewModel.h"
+#include "SettingsPage.xaml.h"
 
 namespace CalculatorApp
 {
@@ -33,6 +34,8 @@ public
 
         void SetDefaultFocus();
         void SetHeaderAutomationName();
+
+        void CollapseSettings();
 
         Windows::Foundation::Collections::IObservableVector<
             Platform::Object

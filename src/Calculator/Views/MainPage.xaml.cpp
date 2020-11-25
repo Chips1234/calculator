@@ -85,6 +85,7 @@ MainPage::MainPage()
             DisplayInformation::AutoRotationPreferences = DisplayOrientations::Portrait | DisplayOrientations::PortraitFlipped;
         }
     }
+
 }
 
 void MainPage::OnNavigatedTo(NavigationEventArgs ^ e)
@@ -429,7 +430,13 @@ void MainPage::OnNavPaneClosed(_In_ MUXC::NavigationView ^ sender, _In_ Object ^
 
 void MainPage::OnAboutButtonClick(Object ^ sender, ItemClickEventArgs ^ e)
 {
-    ShowAboutPage();
+    SettingsHolder->Navigate((SettingsPage::typeid), this);
+    SettingsHolder->Visibility = ::Visibility::Visible;
+}
+
+void MainPage::CollapseSettings()
+{
+    SettingsHolder->Visibility = ::Visibility::Collapsed;
 }
 
 void MainPage::OnAboutFlyoutOpened(_In_ Object ^ sender, _In_ Object ^ e)
