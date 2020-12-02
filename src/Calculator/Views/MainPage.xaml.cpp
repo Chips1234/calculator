@@ -406,9 +406,9 @@ void MainPage::OnNavLoaded(_In_ Object ^ sender, _In_ RoutedEventArgs ^ e)
 
 void MainPage::OnNavPaneOpening(_In_ MUXC::NavigationView ^ sender, _In_ Object ^ args)
 {
-    if (!AboutButton)
+    if (!SettingsButton)
     {
-        this->FindName(L"AboutButton");
+        this->FindName(L"SettingsButton");
     }
 }
 
@@ -428,7 +428,7 @@ void MainPage::OnNavPaneClosed(_In_ MUXC::NavigationView ^ sender, _In_ Object ^
     this->SetDefaultFocus();
 }
 
-void MainPage::OnAboutButtonClick(Object ^ sender, ItemClickEventArgs ^ e)
+void MainPage::OnSettingsButtonClick(Object ^ sender, ItemClickEventArgs ^ e)
 {
     SettingsHolder->Navigate((SettingsPage::typeid), this);
     SettingsHolder->Visibility = ::Visibility::Visible;
@@ -437,20 +437,6 @@ void MainPage::OnAboutButtonClick(Object ^ sender, ItemClickEventArgs ^ e)
 void MainPage::CollapseSettings()
 {
     SettingsHolder->Visibility = ::Visibility::Collapsed;
-}
-
-void MainPage::OnAboutFlyoutOpened(_In_ Object ^ sender, _In_ Object ^ e)
-{
-    // Keep Ignoring Escape till the About page flyout is opened
-    KeyboardShortcutManager::IgnoreEscape(false);
-    KeyboardShortcutManager::HonorShortcuts(false);
-}
-
-void MainPage::OnAboutFlyoutClosed(_In_ Object ^ sender, _In_ Object ^ e)
-{
-    // Start Honoring Escape once the About page flyout is closed
-    KeyboardShortcutManager::HonorEscape();
-    KeyboardShortcutManager::HonorShortcuts(!NavView->IsPaneOpen);
 }
 
 void MainPage::OnNavSelectionChanged(_In_ Object ^ sender, _In_ MUXC::NavigationViewSelectionChangedEventArgs ^ e)
@@ -511,16 +497,6 @@ MUXC::NavigationViewItem ^ MainPage::CreateNavViewItemFromCategory(NavCategory ^
     AutomationProperties::SetAutomationId(item, category->AutomationId);
 
     return item;
-}
-
-void MainPage::ShowAboutPage()
-{
-    if (!AboutPage)
-    {
-        this->FindName(L"AboutPage");
-    }
-
-    FlyoutBase::ShowAttachedFlyout(AboutButton);
 }
 
 void MainPage::UnregisterEventHandlers()

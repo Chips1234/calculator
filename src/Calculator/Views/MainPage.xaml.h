@@ -57,9 +57,7 @@ public
             Microsoft::UI::Xaml::Controls::NavigationView ^ /*sender*/,
             _In_ Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs ^ e);
 
-        void OnAboutButtonClick(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::Controls::ItemClickEventArgs ^ e);
-        void OnAboutFlyoutOpened(_In_ Platform::Object ^ sender, _In_ Platform::Object ^ e);
-        void OnAboutFlyoutClosed(_In_ Platform::Object ^ sender, _In_ Platform::Object ^ e);
+        void OnSettingsButtonClick(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::Controls::ItemClickEventArgs ^ e);
         void AlwaysOnTopButtonClick(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
         void TitleBarAlwaysOnTopButtonClick(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
 
@@ -78,7 +76,6 @@ public
         void EnsureDateCalculator();
         void EnsureGraphingCalculator();
         void EnsureConverter();
-        void ShowAboutPage();
 
         void AnnounceCategoryName();
 

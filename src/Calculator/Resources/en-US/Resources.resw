@@ -2717,8 +2717,8 @@
     <value>© %1 Microsoft. All rights reserved.</value>
     <comment>{Locked="%1"}. Copyright statement, displayed on the About panel. %1 = the current year (4 digits)</comment>
   </data>
-  <data name="AboutButton.Content" xml:space="preserve">
-    <value>About</value>
+  <data name="SettingsButton.Content" xml:space="preserve">
+    <value>Settings</value>
     <comment>The text that shows in the dropdown navigation control to open About panel</comment>
   </data>
   <data name="FeedbackButton.Content" xml:space="preserve">
