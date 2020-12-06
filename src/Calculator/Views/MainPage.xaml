@@ -153,7 +153,7 @@
         <Grid Grid.Row="1">
             <Frame x:Name="SettingsHolder"
                    Grid.Row="1"
-                   Canvas.ZIndex="1"
+                   Canvas.ZIndex="0"
                    Visibility="Collapsed"/>
         </Grid>
 
@@ -185,7 +185,7 @@
                                          Style="{StaticResource NavViewItemStyle}"
                                          Tapped="OnSettingsButtonClick">
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource CalculatorFontFamily}" Glyph="&#xe946;"/>
+                        <FontIcon FontFamily="{StaticResource CalculatorFontFamily}" Glyph="&#xe713;"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.PaneFooter>

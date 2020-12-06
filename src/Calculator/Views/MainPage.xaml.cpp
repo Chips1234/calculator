@@ -432,11 +432,13 @@ void MainPage::OnSettingsButtonClick(Object ^ sender, ItemClickEventArgs ^ e)
 {
     SettingsHolder->Navigate((SettingsPage::typeid), this);
     SettingsHolder->Visibility = ::Visibility::Visible;
+    NavView->Visibility = ::Visibility::Collapsed;
 }
 
 void MainPage::CollapseSettings()
 {
     SettingsHolder->Visibility = ::Visibility::Collapsed;
+    NavView->Visibility = ::Visibility::Visible;
 }
 
 void MainPage::OnNavSelectionChanged(_In_ Object ^ sender, _In_ MUXC::NavigationViewSelectionChangedEventArgs ^ e)
