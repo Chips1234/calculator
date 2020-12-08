@@ -439,6 +439,7 @@ void MainPage::CollapseSettings()
 {
     SettingsHolder->Visibility = ::Visibility::Collapsed;
     NavView->Visibility = ::Visibility::Visible;
+    NavView->IsPaneOpen = false;
 }
 
 void MainPage::OnNavSelectionChanged(_In_ Object ^ sender, _In_ MUXC::NavigationViewSelectionChangedEventArgs ^ e)
