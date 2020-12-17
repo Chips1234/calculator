@@ -346,6 +346,7 @@
                     <RowDefinition Height="1*" MaxHeight="8"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+
                 <!-- Compound Results -->
                 <TextBlock x:Name="ResultLabel"
                            Grid.Row="1"
