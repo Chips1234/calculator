@@ -285,9 +285,9 @@ void FinanceCalculator::CalculateInterestButton_Click(_In_ Object ^ sender, _In_
 void FinanceCalculator::TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
-    SplitBetween->Text = "1";
 
     FindBillTotal->IsChecked = true;
+    ::IsSplitBill = false;
 }
 
 void FinanceCalculator::FindBillTotal_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
@@ -476,8 +476,9 @@ double FinanceCalculator::TotalSplit()
 double FinanceCalculator::CalculatedTipsSplit()
 {
     double SplittedTotal = TotalSplit();
-    double Total = TotalNoSplit();
     double CalculatedTips = 0;
+
+    double Total = 0;
 
     // Convert BillAmount to double
     String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
@@ -489,10 +490,15 @@ double FinanceCalculator::CalculatedTipsSplit()
     std::wstring SplitBetweenString(SplitBetweenTextbox->Data());
     double People = std::stod(SplitBetweenString);
 
+    if (Total != -1)
+    {
+        Total = (SplittedTotal * People);
+    }
+
     // Find the total
     if (::IsFindBillAmount == false)
     {
-        if (BillAmountOrTotal->Text != "" && SplittedTotal != -1)
+        if (BillAmountOrTotal->Text != "")
         {
             CalculatedTips = (SplittedTotal - (Bill / People));
         }
@@ -521,16 +527,12 @@ void FinanceCalculator::SplitBillCheckBox_Checked(Platform::Object ^ sender, Win
 {
     ::IsSplitBill = true;
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Visible;
-
-    SplitBetween->Text = "";
 }
 
 void FinanceCalculator::SplitBillCheckBox_Unchecked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     ::IsSplitBill = false;
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
-
-    SplitBetween->Text = "1";
 }
 
 void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ RoutedEventArgs ^ e)
@@ -564,7 +566,7 @@ void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ Rout
         if (TotalNoSplit() != -1 && CalculatedTipsNoSplit() != -1)
         {
             TipsTotalAmount->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
-            TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, TipsNoSplitString);
+            TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, CalculatedTipsNoSplit().ToString());
         }
         else if (TotalNoSplit() == -1 || CalculatedTipsNoSplit() == -1)
         {
