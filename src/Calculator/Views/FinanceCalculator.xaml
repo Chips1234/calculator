@@ -235,6 +235,10 @@
                           MinWidth="276"
                           ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
                           IsSelected="{Binding isCompoundMode, Converter={StaticResource BooleanNegationConverter}, Mode=TwoWay}"/>
+            <ComboBoxItem x:Uid="Finance_MortgageOption"
+                          MinWidth="276"
+                          ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
+                          IsSelected="{Binding isMortgageMode, Mode=TwoWay}"/>
 
         </ComboBox>
 
@@ -288,8 +292,7 @@
 
             <muxc:NumberBox x:Name="PrincipleAndFutureValue"
                             Grid.Row="3"
-                            Grid.ColumnSpan="3"
-                            Minimum="0"/>
+                            Grid.ColumnSpan="3"/>
 
             <muxc:NumberBox x:Name="InterestRate"
                             x:Uid="InterestRateHeader"
@@ -457,7 +460,7 @@
                 <TextBlock x:Name="TipsResultLabel"
                            Grid.Row="1"
                            Foreground="{StaticResource SystemControlPageTextBaseHighBrush}"/>
-                <TextBlock x:Name="TipsTotalAmout"
+                <TextBlock x:Name="TipsTotalAmount"
                            Grid.Row="2"
                            Style="{ThemeResource SubtitleTextBlockStyle}"
                            FontWeight="SemiBold"

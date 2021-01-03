@@ -7,11 +7,10 @@
 #include "CalcViewModel/Common/LocalizationService.h"
 #include "CalcViewModel/Common/LocalizationStringUtil.h"
 #include "FinanceCalculator.xaml.h"
-using namespace std;
 
+using namespace std;
 using namespace CalculatorApp;
 using namespace CalculatorApp::Common;
-
 using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
@@ -31,7 +30,8 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-// Note that "Bill Amount" refers to the total, without tips. "Total" refers to the total, including tips 
+// Note that "Bill Amount" refers to the total, before tips. "Total" refers to the total, including tips 
+// "-1" is returned when there is a error in calculation (e.g. a field is not filled in)
 
 bool IsFindPrinciple(false);
 bool IsFindBillAmount(false);
@@ -285,38 +285,80 @@ void FinanceCalculator::CalculateInterestButton_Click(_In_ Object ^ sender, _In_
 void FinanceCalculator::TipGrid_Loaded(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+    SplitBetween->Text = "1";
+
     FindBillTotal->IsChecked = true;
 }
 
 void FinanceCalculator::FindBillTotal_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
-    ::IsFindBillAmount = false;
     BillAmountOrTotal->Header = resourceLoader->GetResourceString(L"BillAmount");
     TipsResultLabel->Text = resourceLoader->GetResourceString(L"Total");
+
+    if (BillAmountOrTotal->Text != "" && TipAmount->Text != "")
+    {
+        if (::IsSplitBill == false)
+        {
+            BillAmountOrTotal->Text = TotalNoSplit().ToString();
+        }
+        else
+        {
+            BillAmountOrTotal->Text = TotalSplit().ToString();
+        }
+        TipsTotalAmount->Text = "";
+        TipsSecodaryResults->Text = "";
+    }
+    else
+    {
+        BillAmountOrTotal->Text = "";
+        TipsTotalAmount->Text = "";
+        TipsSecodaryResults->Text = "";
+    }
+
+    ::IsFindBillAmount = false;
 }
 
 void FinanceCalculator::FindBillAmount_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
-    ::IsFindBillAmount = true;
     BillAmountOrTotal->Header = resourceLoader->GetResourceString(L"TotalAmount");
     TipsResultLabel->Text = resourceLoader->GetResourceString(L"Amount");
+
+    if (BillAmountOrTotal->Text != "" && TipAmount->Text != "")
+    {
+        BillAmountOrTotal->Text = TotalNoSplit().ToString();
+
+        TipsTotalAmount->Text = "";
+        TipsSecodaryResults->Text = "";
+    }
+    else
+    {
+        BillAmountOrTotal->Text = "";
+        CompoundResults->Text = "";
+        CompoundSecondaryResults->Text = "";
+    }
+
+    ::IsFindBillAmount = true;
 }
 
 double FinanceCalculator::TotalNoSplit()
 {
     double AmountDueOrTotal = 0;
+
+    // Convert BillAmount to double
+    String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
+    std::wstring BillAmoutString(BillAmoutTextbox->Data());
+    double Bill = std::stod(BillAmoutString);
+
+    // Convert TipAmount to double
+    String ^ TipAmountTextbox = TipAmount->Text;
+    std::wstring TipAmountString(TipAmountTextbox->Data());
+    double Tip = std::stod(TipAmountString);
+
+    double TipDecimal = 0;
+
     if (BillAmountOrTotal->Text != "" && TipAmount->Text != "")
     {
-        // Convert BillAmount to double 
-        String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
-        std::wstring BillAmoutString(BillAmoutTextbox->Data());
-        double Bill = std::stod(BillAmoutString);
 
-        // Convert TipAmount to double
-        String ^ TipAmountTextbox = TipAmount->Text;
-        std::wstring TipAmountString(TipAmountTextbox->Data());
-        double Tip = std::stod(TipAmountString);
-        double TipDecimal = 0;
         if (TipType->SelectedIndex == 0)
         {
             TipDecimal = ((Tip / 100) + 1.00);
@@ -347,25 +389,35 @@ double FinanceCalculator::CalculatedTipsNoSplit()
 {
     double AmountDueOrTotal = TotalNoSplit();
     double CalculatedTips = 0;
-    if (BillAmountOrTotal->Text != "" && AmountDueOrTotal != -1)
-    {
-        // Convert BillAmount to double
-        String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
-        std::wstring BillAmoutString(BillAmoutTextbox->Data());
-        double Bill = std::stod(BillAmoutString);
 
-        if (::IsFindBillAmount == false)
+    // Convert BillAmount to double
+    String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
+    std::wstring BillAmoutString(BillAmoutTextbox->Data());
+    double Bill = std::stod(BillAmoutString);
+
+    // Find the total
+    if (::IsFindBillAmount == false)
+    {
+        if (BillAmountOrTotal->Text != "" && AmountDueOrTotal != -1)
         {
             CalculatedTips = (AmountDueOrTotal - Bill);
         }
-        else if (::IsFindBillAmount == true)
+        else if (BillAmountOrTotal->Text == "" && AmountDueOrTotal == -1)
+        {
+            CalculatedTips = -1;
+        }
+    }
+    // Find bill amount before tips
+    else if (::IsFindBillAmount == true)
+    {
+        if (BillAmountOrTotal->Text != "" && AmountDueOrTotal != -1)
         {
             CalculatedTips = (Bill - AmountDueOrTotal);
         }
-    }
-    else if (BillAmountOrTotal->Text == "" || AmountDueOrTotal == -1)
-    {
-        CalculatedTips = -1;
+        else if (BillAmountOrTotal->Text == "" && AmountDueOrTotal == -1)
+        {
+            CalculatedTips = -1;
+        }
     }
 
     return CalculatedTips;
@@ -385,7 +437,14 @@ double FinanceCalculator::TotalSplit()
         String ^ TipAmountTextbox = TipAmount->Text;
         std::wstring TipAmountString(TipAmountTextbox->Data());
         double Tip = std::stod(TipAmountString);
+
+        // Convert SplitBetween to double
+        String ^ SplitBetweenTextbox = SplitBetween->Text;
+        std::wstring SplitBetweenString(SplitBetweenTextbox->Data());
+        double People = std::stod(SplitBetweenString);
+
         double TipDecimal = 0;
+
         if (TipType->SelectedIndex == 0)
         {
             TipDecimal = ((Tip / 100) + 1.00);
@@ -395,12 +454,16 @@ double FinanceCalculator::TotalSplit()
             TipDecimal = (Tip + 1.00);
         }
 
-        // Convert SplitBetween to double
-        String ^ SplitBetweenTextbox = SplitBetween->Text;
-        std::wstring SplitBetweenString(SplitBetweenTextbox->Data());
-        double People = std::stod(SplitBetweenString);
+        if (::IsFindBillAmount == false)
+        {
+            AmountDue = ((Bill * TipDecimal) / People);
+        }
+        else if (::IsFindBillAmount == true)
+        {
+            AmountDue = ((Bill / TipDecimal) / People);
+        }
 
-        AmountDue = (Bill * TipDecimal) / People;
+        
     }
     else if (BillAmountOrTotal->Text == "" || TipAmount->Text == "" || SplitBetween->Text == "")
     {
@@ -412,26 +475,43 @@ double FinanceCalculator::TotalSplit()
 
 double FinanceCalculator::CalculatedTipsSplit()
 {
-    double Total = TotalSplit();
+    double SplittedTotal = TotalSplit();
+    double Total = TotalNoSplit();
     double CalculatedTips = 0;
 
-    if (BillAmountOrTotal->Text != "" && Total != -1)
+    // Convert BillAmount to double
+    String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
+    std::wstring BillAmoutString(BillAmoutTextbox->Data());
+    double Bill = std::stod(BillAmoutString);
+
+    // Convert SplitBetween to double
+    String ^ SplitBetweenTextbox = SplitBetween->Text;
+    std::wstring SplitBetweenString(SplitBetweenTextbox->Data());
+    double People = std::stod(SplitBetweenString);
+
+    // Find the total
+    if (::IsFindBillAmount == false)
     {
-        // Convert BillAmount to double
-        String ^ BillAmoutTextbox = BillAmountOrTotal->Text;
-        std::wstring BillAmoutString(BillAmoutTextbox->Data());
-        double Bill = std::stod(BillAmoutString);
-
-        // Convert SplitBetween to double
-        String ^ SplitBetweenTextbox = SplitBetween->Text;
-        std::wstring SplitBetweenString(SplitBetweenTextbox->Data());
-        double People = std::stod(SplitBetweenString);
-
-        CalculatedTips = (Total - (Bill / People));
+        if (BillAmountOrTotal->Text != "" && SplittedTotal != -1)
+        {
+            CalculatedTips = (SplittedTotal - (Bill / People));
+        }
+        else if (BillAmountOrTotal->Text == "" && SplittedTotal == -1)
+        {
+            CalculatedTips = -1;
+        }
     }
-    else if (BillAmountOrTotal->Text == "" && Total == -1)
+    // Find the amount before tips
+    else if (::IsFindBillAmount == true)
     {
-        CalculatedTips = -1;
+        if (BillAmountOrTotal->Text != "" && Total != -1)
+        {
+            CalculatedTips = ((Bill - Total) / People);
+        }
+        else if (BillAmountOrTotal->Text == "" && Total == -1)
+        {
+            CalculatedTips = -1;
+        }
     }
 
     return CalculatedTips;
@@ -441,12 +521,16 @@ void FinanceCalculator::SplitBillCheckBox_Checked(Platform::Object ^ sender, Win
 {
     ::IsSplitBill = true;
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Visible;
+
+    SplitBetween->Text = "";
 }
 
 void FinanceCalculator::SplitBillCheckBox_Unchecked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     ::IsSplitBill = false;
     SplitBetween->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+
+    SplitBetween->Text = "1";
 }
 
 void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ RoutedEventArgs ^ e)
@@ -479,33 +563,33 @@ void FinanceCalculator::CalculateTipButton_Click(_In_ Object ^ sender, _In_ Rout
     {
         if (TotalNoSplit() != -1 && CalculatedTipsNoSplit() != -1)
         {
-            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
+            TipsTotalAmount->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
             TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, TipsNoSplitString);
         }
         else if (TotalNoSplit() == -1 || CalculatedTipsNoSplit() == -1)
         {
-            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CalculationFailed");
+            TipsTotalAmount->Text = resourceLoader->GetResourceString(L"CalculationFailed");
             TipsSecodaryResults->Text = resourceLoader->GetResourceString(L"FinancialError");
         }
     }
-    else if (::IsSplitBill == true && People >= 2)
+    else if (::IsSplitBill == true)
     {
         if (People >= 2 && TotalSplit() != -1 && CalculatedTipsSplit() != -1 && People != -1)
         {
-            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalSplit().ToString() + " "
+            TipsTotalAmount->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalSplit().ToString() + " "
                                        + resourceLoader->GetResourceString(L"PerPerson");
             TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(TipsPerPerson, TipsSplitString, TipsNoSplitString) + " "
                                             + LocalizationStringUtil::GetLocalizedString(TotalNoSplitResource, TotalNoSplitString);
         }
         // If the number of people is 1, then don't split the bill
-        else if (People == 1 && TotalSplit() != -1 && CalculatedTipsSplit() != -1 && People != -1)
+        else if (People == 1 && TotalNoSplit() != -1 && CalculatedTipsNoSplit() != -1)
         {
-            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
+            TipsTotalAmount->Text = resourceLoader->GetResourceString(L"CurrencySymbol") + TotalNoSplit().ToString();
             TipsSecodaryResults->Text = LocalizationStringUtil::GetLocalizedString(Tips, TipsNoSplitString);
         }
-        else if (TotalSplit() == -1 || CalculatedTipsSplit() == -1 || People == -1)
+        else if (TotalNoSplit() == -1 || CalculatedTipsNoSplit() == -1 || People == -1)
         {
-            TipsTotalAmout->Text = resourceLoader->GetResourceString(L"CalculationFailed");
+            TipsTotalAmount->Text = resourceLoader->GetResourceString(L"CalculationFailed");
             TipsSecodaryResults->Text = resourceLoader->GetResourceString(L"FinancialError");
         }
     }

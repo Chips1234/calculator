@@ -4708,7 +4708,7 @@
     <value>Bill Amount ($)</value>
   </data>
   <data name="TipAmountHeader.Header" xml:space="preserve">
-    <value>Tips (%)</value>
+    <value>Tips </value>
   </data>
   <data name="CompoundedHeader.Header" xml:space="preserve">
     <value>Compounded (per year)</value>
@@ -4722,7 +4722,7 @@
     <comment>{Locked="%1} </comment>
   </data>
   <data name="TotalInterestEarned" xml:space="preserve">
-    <value>Total interest earned: %1</value>
+    <value>Total interest earned: $%1</value>
     <comment>{Locked="%1"}</comment>
   </data>
   <data name="Total" xml:space="preserve">
@@ -4802,15 +4802,14 @@
     <value>per person</value>
   </data>
   <data name="Tips" xml:space="preserve">
-    <value>Tips: %1</value>
-    <comment>{Locked="%1}
-</comment>
+    <value>Tips: $%1</value>
+    <comment>{Locked="%1}</comment>
   </data>
   <data name="TipsPerPerson" xml:space="preserve">
-    <value>Tips: %1 per person ($%2 total tips)</value>
+    <value>Tips: $%1 per person ($%2 total tips)</value>
   </data>
   <data name="TotalNoSplit" xml:space="preserve">
-    <value>Total: %1</value>
+    <value>Total: $%1</value>
   </data>
   <data name="FutureValueHeader" xml:space="preserve">
     <value>Future Value ($)</value>
@@ -4835,5 +4834,8 @@
   </data>
   <data name="FindBillAmount.Content" xml:space="preserve">
     <value>Find amount, without tips</value>
+  </data>
+  <data name="Finance_MortgageOption.Content" xml:space="preserve">
+    <value>Mortgage Calculator</value>
   </data>
 </root>

@@ -18,6 +18,7 @@ namespace CalculatorApp
             OBSERVABLE_OBJECT();
             OBSERVABLE_PROPERTY_RW(bool, isCompoundMode);
             OBSERVABLE_PROPERTY_RW(bool, isSplitBill);
+            OBSERVABLE_PROPERTY_RW(bool, isMortgageMode);
         };
     }
 }
