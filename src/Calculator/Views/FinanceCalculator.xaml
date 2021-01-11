@@ -235,11 +235,6 @@
                           MinWidth="276"
                           ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
                           IsSelected="{Binding isCompoundMode, Converter={StaticResource BooleanNegationConverter}, Mode=TwoWay}"/>
-            <ComboBoxItem x:Uid="Finance_MortgageOption"
-                          MinWidth="276"
-                          ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
-                          IsSelected="{Binding isMortgageMode, Mode=TwoWay}"/>
-
         </ComboBox>
 
 

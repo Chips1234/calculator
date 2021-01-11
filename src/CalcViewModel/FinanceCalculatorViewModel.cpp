@@ -9,7 +9,6 @@ using namespace CalculatorApp::ViewModel;
 
 FinanceCalculatorViewModel::FinanceCalculatorViewModel()
     : m_isCompoundMode(true)
-    , m_isSplitBill(false)
-    , m_isMortgageMode(false)
+
 {
 }
