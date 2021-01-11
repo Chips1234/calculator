@@ -4806,10 +4806,10 @@
     <comment>{Locked="%1}</comment>
   </data>
   <data name="TipsPerPerson" xml:space="preserve">
-    <value>Tips: $%1 per person ($%2 total tips)</value>
+    <value>Tips: $%1 per person ($%2 total tips).</value>
   </data>
   <data name="TotalNoSplit" xml:space="preserve">
-    <value>Total: $%1</value>
+    <value>Total: $%1.</value>
   </data>
   <data name="FutureValueHeader" xml:space="preserve">
     <value>Future Value ($)</value>
