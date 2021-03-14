@@ -183,21 +183,22 @@
             <VisualStateGroup CurrentStateChanged="OnVisualStateChanged">
                 <VisualState x:Name="LeftAlignedLayout">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="480"/>
+                        <AdaptiveTrigger MinWindowWidth="515"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="C0.Width" Value="456"/>
+                        <Setter Target="C0.Width" Value="510"/>
                         <Setter Target="C1.Width" Value="*"/>
-                        <Setter Target="CompoundResults.FontSize" Value="24"/>
-                        <Setter Target="PrincipleAndFutureValue.Width" Value="215"/>
-                        <Setter Target="Grid2.Width" Value="1*"/>
-                        <Setter Target="InterestRate.Width" Value="120"/>
-                        <Setter Target="InterestType.Width" Value="90"/>
-                        <Setter Target="Term.Width" Value="120"/>
+                        <Setter Target="PrincipleAndFutureValue.Width" Value="245"/>
+                        <Setter Target="Grid2.Width" Value="16"/>
+                        <Setter Target="InterestRate.Width" Value="140"/>
+                        <Setter Target="Grid1.Width" Value="5"/>
+                        <Setter Target="InterestType.Width" Value="100"/>
+                        <Setter Target="Term.Width" Value="140"/>
                         <Setter Target="Term.SpinButtonPlacementMode" Value="Inline"/>
-                        <Setter Target="FinancialTermType.Width" Value="90"/>
-                        <Setter Target="Compounded.Width" Value="215"/>
-                        <Setter Target="Compounded.SpinButtonPlacementMode" Value="Inline"/>
+                        <Setter Target="Grid3.Width" Value="5"/>
+                        <Setter Target="FinancialTermType.Width" Value="100"/>
+                        <Setter Target="Compounded.Width" Value="245"/>
+                        <Setter Target="CompoundResults.FontSize" Value="24"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="DefaultLayout">
@@ -205,17 +206,12 @@
                         <AdaptiveTrigger MinWindowWidth="0"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="CompoundResults.FontSize" Value="20"/>
                         <Setter Target="PrincipleAndFutureValue.Width" Value="140"/>
                         <Setter Target="Grid2.Width" Value="5"/>
-                        <Setter Target="InterestRate.Width" Value="70"/>
-                        <Setter Target="Grid1.Width" Value="0*"/>
-                        <Setter Target="InterestType.Width" Value="70"/>
-                        <Setter Target="Term.Width" Value="70"/>
-                        <Setter Target="Term.SpinButtonPlacementMode" Value="Hidden"/>
-                        <Setter Target="FinancialTermType.Width" Value="70"/>
-                        <Setter Target="Compounded.Width" Value="110"/>
-                        <Setter Target="Compounded.SpinButtonPlacementMode" Value="Hidden"/>
+                        <Setter Target="InterestRate.Width" Value="65"/>
+                        <Setter Target="InterestRate.Grid/Row" Value="5"/>
+                        <Setter Target="Grid1.Width" Value="0"/>
+                        <Setter Target="CompoundResults.FontSize" Value="20"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -263,11 +259,13 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition x:Name="Grid2"
                                   Width="1*"
-                                  MaxWidth="17"/>
+                                  MaxWidth="16"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="1*" MaxWidth="5"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition x:Name="Grid3" Width="1*"/>
+                <ColumnDefinition x:Name="Grid3"
+                                  Width="1*"
+                                  MaxWidth="5"/>
+                <ColumnDefinition x:Name="Grid4" Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Some numberbox's headers are set in the C++ file, since they need to be set dynamically -->
