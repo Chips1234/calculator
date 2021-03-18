@@ -186,7 +186,7 @@
                         <AdaptiveTrigger MinWindowWidth="515"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="C0.Width" Value="510"/>
+                        <Setter Target="C0.Width" Value="520"/>
                         <Setter Target="C1.Width" Value="*"/>
                         <Setter Target="PrincipleAndFutureValue.Width" Value="245"/>
                         <Setter Target="Grid2.Width" Value="16"/>
@@ -367,7 +367,6 @@
         <!-- Grid to calculate tips -->
         <Grid x:Name="TipCalculationGrid"
               Grid.Row="2"
-              Grid.ColumnSpan="3"
               x:DeferLoadStrategy="Lazy"
               Loaded="TipGrid_Loaded"
               Visibility="{Binding isCompoundMode, Converter={StaticResource BooleanToVisibilityNegationConverter}}">
@@ -376,9 +375,9 @@
                 <RowDefinition Height="1*" MaxHeight="17"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1*" MaxHeight="17"/>
-                <RowDefinition Height="Auto" MinHeight="32"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
-                <RowDefinition Height="Auto" MinHeight="32"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
                 <RowDefinition Height="Auto" MinHeight="32"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
@@ -404,34 +403,44 @@
                          Grid.Column="2"
                          Checked="FindBillAmount_Checked"/>
 
-            <muxc:NumberBox x:Name="BillAmountOrTotal" Grid.Row="3"/>
+            <StackPanel Grid.Row="3"
+                        Grid.ColumnSpan="6"
+                        Orientation="Horizontal">
 
-            <muxc:NumberBox x:Name="TipAmount"
-                            x:Uid="TipAmountHeader"
-                            Grid.Row="3"
-                            Grid.Column="2"/>
+                <muxc:NumberBox x:Name="BillAmountOrTotal" Width="245"/>
 
-            <ComboBox x:Name="TipType"
-                      x:Uid="TipType"
-                      Grid.Row="3"
-                      Grid.Column="4"
-                      SelectedIndex="0">
-                <ComboBoxItem x:Uid="Financial_Percentage" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
-                <ComboBoxItem x:Uid="Financial_Decimal" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
-            </ComboBox>
+                <muxc:NumberBox x:Name="TipAmount"
+                                x:Uid="TipAmountHeader"
+                                Width="140"
+                                Margin="16,0,0,0"/>
 
-            <CheckBox x:Name="SplitBillCheckBox"
-                      x:Uid="SplitBillCheckBox"
-                      Grid.Row="5"
-                      Checked="SplitBillCheckBox_Checked"
-                      Unchecked="SplitBillCheckBox_Unchecked"/>
+                <ComboBox x:Name="TipType"
+                          x:Uid="TipType"
+                          Width="100"
+                          Margin="5,0,0,0"
+                          SelectedIndex="0">
+                    <ComboBoxItem x:Uid="Financial_Percentage" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+                    <ComboBoxItem x:Uid="Financial_Decimal" ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"/>
+                </ComboBox>
+            </StackPanel>
 
-            <muxc:NumberBox x:Name="SplitBetween"
-                            x:Uid="SplitBetweenHeader"
-                            Grid.Row="5"
-                            Grid.Column="2"
-                            Grid.ColumnSpan="3"
-                            SpinButtonPlacementMode="Inline"/>
+            <StackPanel Grid.Row="5"
+                        Grid.ColumnSpan="6"
+                        Orientation="Horizontal">
+
+                <CheckBox x:Name="SplitBillCheckBox"
+                          x:Uid="SplitBillCheckBox"
+                          Width="245"
+                          VerticalAlignment="Center"
+                          Checked="SplitBillCheckBox_Checked"
+                          Unchecked="SplitBillCheckBox_Unchecked"/>
+
+                <muxc:NumberBox x:Name="SplitBetween"
+                                x:Uid="SplitBetweenHeader"
+                                Width="245"
+                                Margin="16,0,0,0"
+                                SpinButtonPlacementMode="Inline"/>
+            </StackPanel>
 
             <Button x:Name="CalculateTipButton"
                     x:Uid="CalculateTipButton"
