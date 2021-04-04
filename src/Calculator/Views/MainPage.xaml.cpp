@@ -430,16 +430,13 @@ void MainPage::OnNavPaneClosed(_In_ MUXC::NavigationView ^ sender, _In_ Object ^
 
 void MainPage::OnSettingsButtonClick(Object ^ sender, ItemClickEventArgs ^ e)
 {
-    SettingsHolder->Navigate((SettingsPage::typeid), this);
-    SettingsHolder->Visibility = ::Visibility::Visible;
-    NavView->Visibility = ::Visibility::Collapsed;
+    auto rootFrame = dynamic_cast<::Frame ^>(Window::Current->Content);
+    rootFrame->Navigate(SettingsPage::typeid);
 }
 
 void MainPage::CollapseSettings()
 {
-    SettingsHolder->Visibility = ::Visibility::Collapsed;
-    NavView->Visibility = ::Visibility::Visible;
-    NavView->IsPaneOpen = false;
+    
 }
 
 void MainPage::OnNavSelectionChanged(_In_ Object ^ sender, _In_ MUXC::NavigationViewSelectionChangedEventArgs ^ e)

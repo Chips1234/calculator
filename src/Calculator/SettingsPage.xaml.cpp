@@ -38,5 +38,6 @@ void SettingsPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventA
 
 void SettingsPage::Button_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
-    ParentMainPage->CollapseSettings();
+    auto rootFrame = dynamic_cast<::Frame ^>(Window::Current->Content);
+    rootFrame->Navigate(MainPage::typeid);
 }
