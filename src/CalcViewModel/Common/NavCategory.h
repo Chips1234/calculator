@@ -93,7 +93,7 @@ namespace CalculatorApp
             const MyVirtualKey virtualKey;
             const wchar_t* const accessKey;
             const bool supportsNegative;
-            const bool isEnabled;
+            bool isEnabled;
         };
 
     private
@@ -141,6 +141,8 @@ namespace CalculatorApp
             static bool IsDateCalculatorViewMode(ViewMode mode);
             static bool IsFinanceCalculatorViewMode(ViewMode mode);
             static bool IsConverterViewMode(ViewMode mode);
+
+            static void InitializeCategoryManifest(Windows::System::User ^ user);
 
             static Platform::String ^ GetFriendlyName(ViewMode mode);
             static Platform::String ^ GetNameResourceKey(ViewMode mode);

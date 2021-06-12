@@ -61,7 +61,7 @@ bool IsGraphingModeAvailable()
 }
 
 Box<bool> ^ _isGraphingModeEnabledCached = nullptr;
-bool IsGraphingModeEnabled()
+bool IsGraphingModeEnabled(User ^ currentUser = nullptr)
 {
     if (!IsGraphingModeAvailable())
     {
@@ -73,17 +73,19 @@ bool IsGraphingModeEnabled()
         return _isGraphingModeEnabledCached->Value;
     }
 
-    User ^ firstUser;
-    create_task(User::FindAllAsync(UserType::LocalUser)).then([&firstUser](IVectorView<User ^> ^ users) {
-        firstUser = users->GetAt(0); }).wait();
-        auto namedPolicyData = NamedPolicy::GetPolicyFromPathForUser(firstUser, L"Education", L"AllowGraphingCalculator");
-        _isGraphingModeEnabledCached = namedPolicyData->GetBoolean() == true;
+    if (!currentUser)
+    {
+        return true;
+    }
+
+    auto namedPolicyData = NamedPolicy::GetPolicyFromPathForUser(currentUser, L"Education", L"AllowGraphingCalculator");
+    _isGraphingModeEnabledCached = namedPolicyData->GetBoolean() == true;
 
     return _isGraphingModeEnabledCached->Value;
 }
 
 // The order of items in this list determines the order of items in the menu.
-static const list<NavCategoryInitializer> s_categoryManifest = [] {
+static list<NavCategoryInitializer> s_categoryManifest = [] {
     auto res = list<NavCategoryInitializer>{ NavCategoryInitializer{ ViewMode::Standard,
                                                                      STANDARD_ID,
                                                                      L"Standard",
@@ -109,7 +111,7 @@ static const list<NavCategoryInitializer> s_categoryManifest = [] {
     bool supportGraphingCalculator = IsGraphingModeAvailable();
     if (supportGraphingCalculator)
     {
-        const bool isEnabled = IsGraphingModeEnabled();
+        bool isEnabled = IsGraphingModeEnabled();
         res.push_back(NavCategoryInitializer{ ViewMode::Graphing,
                                               GRAPHING_ID,
                                               L"Graphing",
@@ -287,6 +289,25 @@ static const list<NavCategoryInitializer> s_categoryManifest = [] {
     return res;
 }();
 
+void NavCategory::InitializeCategoryManifest(User ^ user)
+{
+    int i = 0;
+    for (NavCategoryInitializer category : s_categoryManifest)
+    {
+        if (category.viewMode == ViewMode::Graphing)
+        {
+            auto navCatInit = s_categoryManifest.begin();
+            std::advance(navCatInit, i);
+            (*navCatInit).isEnabled = IsGraphingModeEnabled(user);
+            break;
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
 // This function should only be used when storing the mode to app data.
 int NavCategory::Serialize(ViewMode mode)
 {
@@ -337,8 +358,9 @@ bool NavCategory::IsValidViewMode(ViewMode mode)
 
 bool NavCategory::IsViewModeEnabled(ViewMode mode)
 {
-    auto iter =
-        find_if(begin(s_categoryManifest), end(s_categoryManifest), [mode](const NavCategoryInitializer& initializer) { return initializer.viewMode == mode && initializer.isEnabled; });
+    auto iter = find_if(begin(s_categoryManifest), end(s_categoryManifest), [mode](const NavCategoryInitializer& initializer) {
+        return initializer.viewMode == mode && initializer.isEnabled;
+    });
 
     return iter != s_categoryManifest.end();
 }
